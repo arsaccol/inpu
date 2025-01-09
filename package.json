@@ -1,6 +1,6 @@
 {
-  "name": "hiero-react",
-  "homepage": "https://arsaccol.github.io/inpu",
+  "name": "inpu",
+  "homepage": "https://arsaccol.github.io/inpu/",
   "private": true,
   "version": "0.0.0",
   "type": "module",
