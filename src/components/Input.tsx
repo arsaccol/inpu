@@ -1,16 +1,12 @@
-import { useState } from 'react'
+import { useIME } from '../hooks/useIME'
 
 function Input() {
-  const [inputState, setInputState] = useState('')
-
-  function inputHandler(e) {
-    setInputState(e.target.value)
-  }
+  const { inputString, setInputString, handleInput, handleKeyDown, outputString } = useIME()
 
   return (
     <div>
-      <h1>{ inputState }</h1>
-      <input onChange={inputHandler}>
+      <h1>{ outputString }</h1>
+      <input onChange={handleInput} onKeyDown={handleKeyDown}>
       </input>
     </div>
   )

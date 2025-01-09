@@ -1,4 +1,15 @@
-const characterMapping = {
+export type Uniliteral = {
+  glyph: string;
+  transliteration: string;
+
+}
+
+export type CharacterMapping = {
+  uniliterals: Uniliteral[];
+}
+
+
+export const characterMapping: CharacterMapping = {
   uniliterals: [
     { 
       glyph: "𓄿", 
@@ -14,7 +25,7 @@ const characterMapping = {
     },
     { 
       glyph: "𓏭", 
-      transliteration: "y"
+      transliteration: "Y"
     },
     { 
       glyph: "𓂝", 
@@ -74,7 +85,7 @@ const characterMapping = {
     },
     { 
       glyph: "𓊃", 
-      transliteration: "s"
+      transliteration: "S"
     },
     { 
       glyph: "𓈙", 
@@ -109,5 +120,4 @@ const characterMapping = {
       transliteration: "dj"
     },
   ]
-
 }
