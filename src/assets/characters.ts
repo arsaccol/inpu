@@ -89,7 +89,7 @@ export const characterMapping: CharacterMapping = {
     },
     { 
       glyph: "𓈙", 
-      transliteration: "sh"
+      transliteration: "x"
     },
     { 
       glyph: "𓈎", 
@@ -117,7 +117,7 @@ export const characterMapping: CharacterMapping = {
     },
     { 
       glyph: "𓆓", 
-      transliteration: "dj"
+      transliteration: "j"
     },
   ]
 }
