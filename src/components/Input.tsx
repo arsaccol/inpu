@@ -1,7 +1,7 @@
 import { useIME } from '../hooks/useIME'
 
 function Input() {
-  const { inputString, setInputString, handleInput, handleKeyDown, outputString } = useIME()
+  const { handleInput, handleKeyDown, outputString } = useIME()
 
   return (
     <div>

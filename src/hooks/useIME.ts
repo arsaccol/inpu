@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useMemo } from 'react'
 import { characterMapping } from '../assets/characters'
 import { Trie } from '../util/Trie'
 
