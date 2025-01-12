@@ -37,7 +37,7 @@ export const characterMapping: CharacterMapping = {
     },
     { 
       glyph: "𓏲", 
-      transliteration: "w"
+      transliteration: "W"
     },
     { 
       glyph: "𓃀", 
