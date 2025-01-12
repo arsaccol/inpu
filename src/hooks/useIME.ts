@@ -6,11 +6,12 @@ import { Trie } from '../util/Trie'
 export function useIME() {
   const [inputString, setInputString] = useState('')
   const [outputString, setOutputString] = useState('')
+  const [candidates, setCandidates] = useState(['option 0', 'option 1', 'option 2', 'option 3'])
   const trie = useMemo(() => new Trie(characterMapping), [] )
 
   function handleInput(e: React.ChangeEvent<HTMLInputElement>) {
-    //setInputString(e.target.value)
-    //
+    setInputString(e.target.value)
+    
     const newInput = e.target.value
     const newOutput = trie.transliterate(newInput)
     setInputString(newInput)
@@ -26,12 +27,21 @@ export function useIME() {
     }
   }
 
+  function selectCandidate(candidate: string) {
+    console.log(`Candidate "${candidate}" selected`)
+    setInputString(candidate)
+    setOutputString(candidate)
+    //setCandidates([])
+  }
+
   return {
     inputString,
     setInputString,
     handleInput,
     handleKeyDown,
     outputString,
+    candidates,
+    selectCandidate,
   }
 }
 

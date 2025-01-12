@@ -1,5 +1,6 @@
 import './App.css'
-import { Input } from './components/Input'
+import { MaterialIME } from './components/MaterialIME'
+
 
 function App() {
   return (
@@ -9,7 +10,7 @@ function App() {
           Hieroglyphics keyboard
       </div>
       <div>Only uniliterals are implemented for now, and not quite completely, but do look forward for more updates!</div>
-      <Input/>
+      <MaterialIME/>
       <a href="https://google.com">Google</a>
     </>
 
