@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react'
 import { characterMapping } from '../assets/characters'
 import { Trie } from '../util/Trie'
-import database, { lookupTransliteration } from '../util/db'
+import { useDatabase } from './useDatabase'
 
 
 
@@ -10,12 +10,14 @@ export function useIME() {
   const [outputString, setOutputString] = useState('')
   const [candidates, _] = useState(['option 0', 'option 1', 'option 2', 'option 3'])
   const trie = useMemo(() => new Trie(characterMapping), [] )
+  const { lookupInputTransliteration } = useDatabase()
+
 
 
   function handleInput(e: React.ChangeEvent<HTMLInputElement>) {
     setInputString(e.target.value)
 
-    const result = lookupTransliteration(database, e.target.value.slice(-1))[0]
+    const result = lookupInputTransliteration(e.target.value.slice(-1))[0]
 
     console.log(JSON.stringify(result?.values, null, 2))
     //console.log('number of results: ', result?.values?.length)
