@@ -11,7 +11,7 @@ function App() {
       </div>
       <div>Only uniliterals are implemented for now, and not quite completely, but do look forward for more updates!</div>
       <MaterialIME/>
-      <a href="https://google.com">Google</a>
+      <a href="https://forms.gle/iGvfAd5toML9Gxt57" target="blank">Have any feedback?</a>
     </>
 
   )

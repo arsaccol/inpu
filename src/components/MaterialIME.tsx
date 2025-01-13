@@ -36,7 +36,6 @@ export function MaterialIME() {
       </div>
       <Box sx={{
           height: 100,
-          overflowY: 'scroll',
           overflowWrap: 'break-word',
           backgroundColor: 'var(--background-color)',
           border: '1px solid var(--background-color)',
