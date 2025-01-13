@@ -13,7 +13,7 @@ export const characterMapping: CharacterMapping = {
   uniliterals: [
     { 
       glyph: "𓄿", 
-      transliteration: ";"
+      transliteration: "a"
     },
     { 
       glyph: "𓇋", 
@@ -21,15 +21,15 @@ export const characterMapping: CharacterMapping = {
     },
     { 
       glyph: "𓇌", 
-      transliteration: "y"
-    },
-    { 
-      glyph: "𓏭", 
       transliteration: "Y"
     },
     { 
+      glyph: "𓏭", 
+      transliteration: "y"
+    },
+    { 
       glyph: "𓂝", 
-      transliteration: "`"
+      transliteration: "A"
     },
     { 
       glyph: "𓅱", 
@@ -65,19 +65,19 @@ export const characterMapping: CharacterMapping = {
     },
     { 
       glyph: "𓉔", 
-      transliteration: "h1"
+      transliteration: "h"
     },
     { 
       glyph: "𓎛", 
-      transliteration: "h2"
+      transliteration: "H"
     },
     { 
       glyph: "𓐍", 
-      transliteration: "h3"
+      transliteration: "x"
     },
     { 
       glyph: "𓄡", 
-      transliteration: "h4"
+      transliteration: "X"
     },
     { 
       glyph: "𓋴",
@@ -85,11 +85,11 @@ export const characterMapping: CharacterMapping = {
     },
     { 
       glyph: "𓊃", 
-      transliteration: "S"
+      transliteration: "z"
     },
     { 
       glyph: "𓈙", 
-      transliteration: "x"
+      transliteration: "S"
     },
     { 
       glyph: "𓈎", 
@@ -109,7 +109,7 @@ export const characterMapping: CharacterMapping = {
     },
     { 
       glyph: "𓍿", 
-      transliteration: "ch"
+      transliteration: "T"
     },
     { 
       glyph: "𓂧", 
