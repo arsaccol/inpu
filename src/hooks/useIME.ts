@@ -1,7 +1,8 @@
 import { useState, useMemo } from 'react'
 import { characterMapping } from '../assets/characters'
 import { Trie } from '../util/Trie'
-//import database, { lookupTransliteration } from '../util/db'
+import database, { lookupTransliteration } from '../util/db'
+
 
 
 export function useIME() {
@@ -14,9 +15,9 @@ export function useIME() {
   function handleInput(e: React.ChangeEvent<HTMLInputElement>) {
     setInputString(e.target.value)
 
-    //const result = lookupTransliteration(database, e.target.value.slice(-1))[0]
+    const result = lookupTransliteration(database, e.target.value.slice(-1))[0]
 
-    //console.log(JSON.stringify(result.values, null, 2))
+    console.log(JSON.stringify(result?.values, null, 2))
     //console.log('number of results: ', result?.values?.length)
     
     const newInput = e.target.value
