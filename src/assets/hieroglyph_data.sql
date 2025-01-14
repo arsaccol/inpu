@@ -90,8 +90,8 @@ VALUES
 -- triliterals
 INSERT INTO hieroglyphs (glyph, transliteration, input_transliteration, description_words, name, category, gardiner_code, gardiner_group, composing_glyphs)
 VALUES
-('𓉺', 'ỉwn', 'wwn', 'column;', 'Column;', 'triliteral', 'O28', 'O. Buildings, parts of buildings, etc.', '𓇋𓅱𓈖'),
-('𓄔', 'ỉdn', 'wdn', 'ear of bovine; bovine ear; ear;', 'Bovine ear', 'triliteral', 'F21', 'F. Parts of mammals', '𓇋𓂧𓈖'),
+('𓉺', 'ỉwn', 'iwn', 'column;', 'Column;', 'triliteral', 'O28', 'O. Buildings, parts of buildings, etc.', '𓇋𓅱𓈖'),
+('𓄔', 'ỉdn', 'idn', 'ear of bovine; bovine ear; ear;', 'Bovine ear', 'triliteral', 'F21', 'F. Parts of mammals', '𓇋𓂧𓈖'),
 ('𓋹', 'ꜥnḫ', 'Anx', 'life; ankh;', 'Ankh', 'triliteral', 'S34', 'S. Crowns, dress, staves, etc.', '𓂝𓈖𓐍'),
 ('𓌀', 'wꜣs', 'was', 'was scepter; scepter; was; power;', 'Was scepter', 'triliteral', 'S40', 'S. Crowns, dress, staves, etc.', '𓅱𓄿𓋴'),
 ('𓇅', 'wꜣḏ', 'waj', 'papyrus stem; papyrus; stem;', 'Papyrus stem', 'triliteral', 'M13', 'M. Trees and plants', '𓅱𓄿𓆓'),
