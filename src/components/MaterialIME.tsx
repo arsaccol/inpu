@@ -31,8 +31,6 @@ export function MaterialIME() {
 
   return (
     <Box sx={{ position: 'relative', display: 'inline-block', width: '100%' }}>
-      <div style={{ marginTop: '8px', fontSize: '14px' }}>
-      </div>
       <Box sx={{
           height: 100,
           overflowWrap: 'break-word',
@@ -71,7 +69,7 @@ export function MaterialIME() {
             left: '0',
             right: '0',
             zIndex: 10000,
-            maxHeight: '150px',
+            maxHeight: '400px',
             overflowY: 'auto',
             backgroundColor: 'var(--background-color)',
             color: 'var(--text-color)',
