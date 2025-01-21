@@ -2,8 +2,8 @@ import initSqlJs from 'sql.js';
 import { Database } from 'sql.js'
 import schema from '../assets/schema.sql?raw';
 import hieroglyph_data from '../assets/hieroglyph_data.sql?raw';
-
 import { useState, useEffect } from 'react'
+import { HieroglyphModel } from '../models/Hieroglyph.type';
 
 export function useDatabase() {
   const [database, setDatabase] = useState<Database | null>(null)
@@ -53,11 +53,10 @@ export function useDatabase() {
     return result
   }
 
-  function lookupInputTransliterationCandidates(input: string) {
+  function lookupInputTransliterationCandidates(input: string): HieroglyphModel[] {
     if(input.trim() === '') return []
-    console.log('input string', input)
     const query = `select * from hieroglyphs where input_transliteration like '${input}%'`
-    const result = databaseLookup(query)
+    const result: HieroglyphModel[] = databaseLookup(query)
     return result
   }
 

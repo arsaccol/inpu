@@ -83,7 +83,7 @@ export function MaterialIME() {
               <CandidateMenuItem
                 key={index}
                 onClick={() => { console.log('onClick candidate', candidate); selectCandidate!(candidate) }}
-                candidateName={candidate}
+                candidate={candidate}
               >
               </CandidateMenuItem>
         ))}

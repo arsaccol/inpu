@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useDatabase } from './useDatabase'
+import { HieroglyphModel } from '../models/Hieroglyph.type'
 
 //enum InputModes {
 //  PHONOGRAM,
@@ -16,16 +17,13 @@ export function useIME() {
 
   const [inputString, setInputString] = useState<string>('')
   const [outputString, setOutputString] = useState<string>('')
-  const [candidates, setCandidates] = useState<any[]>([])
+  const [candidates, setCandidates] = useState<HieroglyphModel[]>([])
 
-  useEffect(() => {console.log({candidates: JSON.stringify(candidates, null, 2)})}, [candidates])
-  useEffect(() => {console.log({inputString})}, [inputString])
-  useEffect(() => {console.log({outputString})}, [outputString])
 
   function onChange(e: any) {
     e.preventDefault()
 
-    const candidateObjects = lookupInputTransliterationCandidates(e.target.value).map(candidate => candidate.glyph)
+    const candidateObjects = lookupInputTransliterationCandidates(e.target.value)
     setCandidates(candidateObjects)
     setInputString(e.target.value)
   }
@@ -35,9 +33,8 @@ export function useIME() {
     setCandidates([])
   }
 
-  function selectCandidate(candidate: string) {
-    console.log('candidate selected: ', candidate)
-    setOutputString(outputString + candidate)
+  function selectCandidate(candidate: HieroglyphModel) {
+    setOutputString(outputString + candidate.glyph)
     clearInput()
   }
 

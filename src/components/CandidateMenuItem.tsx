@@ -1,8 +1,8 @@
 import { MenuItem } from "@mui/material"
+import { HieroglyphModel } from "../models/Hieroglyph.type"
 
 type CandidateMenuItemProps = {
-  candidateName: string;
-  key?: number;
+  candidate: HieroglyphModel,
   onClick: () => void;
 }
 
@@ -10,13 +10,12 @@ export function CandidateMenuItem(props: CandidateMenuItemProps) {
 
   return (
     <MenuItem
-      key={props?.key}
       onClick={props.onClick}
       sx={{
         cursor: 'pointer',
       }}
     >
-      {props.candidateName}
+      {props.candidate.glyph}
     </MenuItem>
   )
 }
