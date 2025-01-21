@@ -26,14 +26,44 @@ export function useDatabase() {
 
   }, [])
 
+  function databaseLookup(query: string) {
+    if(!database) throw new Error("Database not initialized before performing query")
+    const results = database.exec(query)
+    if(results.length === 0) return []
+
+    // massage data into proper objects before returning
+    const { columns, values } = results[0]
+    const objects = []
+
+    for(const val of values) {
+      const object: any = {}
+      for(let i = 0; i < columns.length; i++) {
+        object[columns[i]] = val[i]
+      }
+
+      objects.push(object)
+    }
+
+    return objects
+  }
+
   function lookupInputTransliteration(inputTransliteration: string) {
     if(!database) throw new Error("Database not initialized before performing query")
     const result = database.exec(`select * from hieroglyphs where input_transliteration = '${inputTransliteration}'`)
     return result
   }
 
+  function lookupInputTransliterationCandidates(input: string) {
+    if(input.trim() === '') return []
+    console.log('input string', input)
+    const query = `select * from hieroglyphs where input_transliteration like '${input}%'`
+    const result = databaseLookup(query)
+    return result
+  }
+
   return {
     lookupInputTransliteration,
+    lookupInputTransliterationCandidates,
   }
 
 

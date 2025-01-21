@@ -11,24 +11,23 @@ import { Typography } from '@mui/material'
 export function MaterialIME() {
   const {
     inputString,
-      outputString,
-      handleInput,
-      handleKeyDown,
-      candidates,
-      selectCandidate
+    outputString,
+    onChange,
+    candidates,
+    selectCandidate,
   } = useIME()
 
   function handleFocus() {
-    if(candidates.length > 0) {
+    if(candidates!.length > 0) {
       setIsMenuVisible(true)
     }
   }
 
   function handleBlur() {
-    setTimeout( () => setIsMenuVisible(false), 100 )
+    //setIsMenuVisible(false)
   }
 
-  const [isMenuVisible, setIsMenuVisible] = useState(false)
+  const [isMenuVisible, setIsMenuVisible] = useState(true)
 
   return (
     <Box sx={{ position: 'relative', display: 'inline-block', width: '100%' }}>
@@ -51,8 +50,7 @@ export function MaterialIME() {
         label=""
         variant="outlined"
         value={inputString}
-        onChange={handleInput}
-        onKeyDown={handleKeyDown}
+        onChange={onChange}
         onFocus={handleFocus}
         onBlur={handleBlur}
         fullWidth
@@ -64,7 +62,7 @@ export function MaterialIME() {
           }
         }}
       />
-      {isMenuVisible && candidates.length > 0 && (
+      {isMenuVisible && candidates!.length > 0 && (
         <Paper 
           sx={{
             position: 'absolute',
@@ -81,10 +79,10 @@ export function MaterialIME() {
           }}
           elevation={3}
         >
-        {candidates.map( (candidate, index) => (
+        {candidates!.map( (candidate, index) => (
               <MenuItem
                 key={index}
-                onClick={() => selectCandidate(candidate)}
+                onClick={() => { console.log('onClick candidate', candidate); selectCandidate!(candidate) }}
                 sx={{
                   cursor: 'pointer',
                 }}
