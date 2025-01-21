@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { useIME } from '../hooks/useIME'
 import { TextField } from '@mui/material'
-import { MenuItem } from '@mui/material'
 import { Box } from '@mui/material'
 import { Paper } from '@mui/material'
 import { Typography } from '@mui/material'
+import { CandidateMenuItem } from './CandidateMenuItem'
 
 
 
@@ -80,15 +80,12 @@ export function MaterialIME() {
           elevation={3}
         >
         {candidates!.map( (candidate, index) => (
-              <MenuItem
+              <CandidateMenuItem
                 key={index}
                 onClick={() => { console.log('onClick candidate', candidate); selectCandidate!(candidate) }}
-                sx={{
-                  cursor: 'pointer',
-                }}
+                candidateName={candidate}
               >
-                {candidate}
-              </MenuItem>
+              </CandidateMenuItem>
         ))}
         </Paper>
 
