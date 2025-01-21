@@ -8,7 +8,7 @@ function App() {
     <>
       <div>
         <h1>𓇋𓈖𓊪𓅱 (α)</h1>
-        Hieroglyph input for the modern scribe.
+        Hieroglyphic input for the modern scribe.
       </div>
           <Typography sx={{fontSize: '12px'}}>
             <a 
