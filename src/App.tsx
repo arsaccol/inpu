@@ -7,9 +7,8 @@ function App() {
     <>
       <div>
         <h1>𓇋𓈖𓊪𓅱 (pre-α)</h1>
-          Hieroglyphics keyboard
+        Hieroglyph input for the modern scribe.
       </div>
-      <div>Hieroglyph input for the modern scribe.</div>
       <MaterialIME/>
       <a href="https://forms.gle/iGvfAd5toML9Gxt57" target="blank">Have any feedback?</a>
     </>
