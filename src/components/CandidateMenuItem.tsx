@@ -6,6 +6,7 @@ import { Typography }  from "@mui/material"
 type CandidateMenuItemProps = {
   candidate: HieroglyphModel,
   onClick: () => void;
+  isSelected?: boolean;
 }
 
 
@@ -15,6 +16,12 @@ export function CandidateMenuItem(props: CandidateMenuItemProps) {
       onClick={props.onClick}
       sx={{
         cursor: 'pointer',
+        backgroundColor: props.isSelected
+        ? 'var(--selected-bg-color)'
+        : 'inherit',
+        '&:hover': {
+          backgroundColor: 'var(--hover-bg-color)'
+        }
       }}
     >
     <Stack direction='row' spacing={3}>

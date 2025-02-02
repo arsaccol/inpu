@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useIME } from '../hooks/useIME'
 import { TextField } from '@mui/material'
 import { Box } from '@mui/material'
@@ -15,19 +15,29 @@ export function MaterialIME() {
     onChange,
     candidates,
     selectCandidate,
+    selectedIndex,
+    handleKeyDown,
   } = useIME()
 
+  const [isFocused, setIsFocused] = useState(false)
+  const [isMenuVisible, setIsMenuVisible] = useState(false)
+
+  useEffect(() => {
+    setIsMenuVisible(isFocused && candidates.length > 0)
+  }, [isFocused, candidates])
+
+
   function handleFocus() {
-    if(candidates!.length > 0) {
-      setIsMenuVisible(true)
-    }
+    setIsFocused(true)
   }
 
-  function handleBlur() {
-    //setIsMenuVisible(false)
+  function handleBlur(e: React.FocusEvent) {
+    const relatedTarget = e.relatedTarget as HTMLElement
+      if(!relatedTarget?.closest('[role="menu"]')) {
+        setIsFocused(false)
+      }
   }
 
-  const [isMenuVisible, setIsMenuVisible] = useState(true)
 
   return (
     <Box sx={{ position: 'relative', display: 'inline-block', width: '100%' }}>
@@ -49,6 +59,7 @@ export function MaterialIME() {
         variant="outlined"
         value={inputString}
         onChange={onChange}
+        onKeyDown={handleKeyDown}
         onFocus={handleFocus}
         onBlur={handleBlur}
         fullWidth
@@ -62,6 +73,7 @@ export function MaterialIME() {
       />
       {isMenuVisible && candidates!.length > 0 && (
         <Paper 
+          role="menu"
           sx={{
             position: 'absolute',
             top: '100%',
@@ -77,9 +89,10 @@ export function MaterialIME() {
           }}
           elevation={3}
         >
-        {candidates!.map( (candidate, index) => (
+        {candidates.map( (candidate, index) => (
               <CandidateMenuItem
-                key={index}
+                key={candidate.id}
+                isSelected={index === selectedIndex}
                 onClick={() => { console.log('onClick candidate', candidate); selectCandidate!(candidate) }}
                 candidate={candidate}
               >
