@@ -22,7 +22,6 @@ export function MaterialIME() {
 
   const [isFocused, setIsFocused] = useState(false)
   const [isMenuVisible, setIsMenuVisible] = useState(false)
-  const selectedMenuItemRef = useRef(null)
 
   useEffect(() => {
     setIsMenuVisible(isFocused && candidates.length > 0)
@@ -77,6 +76,7 @@ export function MaterialIME() {
         <CandidatesMenu 
           candidates={candidates} 
           selectedIndex={selectedIndex}
+          selectCandidate={selectCandidate}
         />
     )}
   </Box>

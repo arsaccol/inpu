@@ -1,16 +1,19 @@
 import { Paper } from '@mui/material'
 import { CandidateMenuItem } from './CandidateMenuItem'
+import { RefObject } from 'react'
+import { HieroglyphModel } from '../models/Hieroglyph.type'
 
 export interface CandidatesMenuProps {
   candidates: any[];
   selectedIndex: number;
-
+  selectCandidate: (candidate: HieroglyphModel) => void;
 }
 
 export function CandidatesMenu(props: CandidatesMenuProps) {
   const {
     candidates,
     selectedIndex,
+    selectCandidate,
   } = props
 
 
