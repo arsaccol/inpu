@@ -2,16 +2,19 @@ import { MenuItem } from "@mui/material"
 import { HieroglyphModel } from "../models/Hieroglyph.type"
 import { Stack } from "@mui/material"
 import { Typography }  from "@mui/material"
+import { RefObject } from 'react'
 
 type CandidateMenuItemProps = {
   candidate: HieroglyphModel,
   onClick: () => void;
   isSelected?: boolean;
+  selectedRef?: RefObject<HTMLDivElement | null> | null;
 }
 
 
 export function CandidateMenuItem(props: CandidateMenuItemProps) {
   return (
+    <div ref={props.selectedRef}>
     <MenuItem
       onClick={props.onClick}
       sx={{
@@ -48,5 +51,6 @@ export function CandidateMenuItem(props: CandidateMenuItemProps) {
     
     </Stack>
     </MenuItem>
+    </div>
   )
 }
