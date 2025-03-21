@@ -1,6 +1,6 @@
 import { Paper } from '@mui/material'
 import { CandidateMenuItem } from './CandidateMenuItem'
-import { RefObject } from 'react'
+import { useRef, useEffect } from 'react'
 import { HieroglyphModel } from '../models/Hieroglyph.type'
 
 export interface CandidatesMenuProps {
@@ -15,6 +15,14 @@ export function CandidatesMenu(props: CandidatesMenuProps) {
     selectedIndex,
     selectCandidate,
   } = props
+
+  const selectedRef = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    if(selectedRef.current) {
+      selectedRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+    }
+  }, [selectedIndex])
 
 
   return (
@@ -35,15 +43,20 @@ export function CandidatesMenu(props: CandidatesMenuProps) {
       }}
       elevation={3}
     >
-    {candidates.map( (candidate, index) => (
+    {candidates.map( (candidate, index) => {
+        const isSelected = index === selectedIndex
+        return (
           <CandidateMenuItem
             key={candidate.id}
-            isSelected={index === selectedIndex}
+            isSelected={isSelected}
             onClick={() => { console.log('onClick candidate', candidate); selectCandidate!(candidate) }}
             candidate={candidate}
+            selectedRef={isSelected? selectedRef : null}
           >
           </CandidateMenuItem>
-    ))}
+        )
+      }
+    )}
     </Paper>
 
   )
