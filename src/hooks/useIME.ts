@@ -2,23 +2,34 @@ import { useState, useEffect } from 'react'
 import { useDatabase } from './useDatabase'
 import { HieroglyphModel } from '../models/Hieroglyph.type'
 
-//enum InputModes {
-//  PHONOGRAM,
-//  GARDINER,
-//  KEYWORDS,
-//}
+export enum InputMode {
+  PHONOGRAM = "Phonogram",
+  GARDINER = "Gardiner Code",
+  KEYWORDS = "Keywords",
+}
+
 
 
 export function useIME() {
 
   const { 
     lookupInputTransliterationCandidates,
+    lookupInputGardinerCandidates,
+    lookupInputDescriptionCandidates,
   } = useDatabase()
+
+  const InputLookupMethodMapping = {
+    [InputMode.PHONOGRAM]: lookupInputTransliterationCandidates,
+    [InputMode.GARDINER]: lookupInputGardinerCandidates,
+    [InputMode.KEYWORDS]: lookupInputDescriptionCandidates,
+  }
 
   const [inputString, setInputString] = useState<string>('')
   const [outputString, setOutputString] = useState<string>('')
   const [candidates, setCandidates] = useState<HieroglyphModel[]>([])
   const [selectedIndex, setSelectedIndex] = useState<number>(0)
+
+  const [selectedInputMode, setSelectedInputMode] = useState<InputMode>(InputMode.PHONOGRAM)
 
   useEffect(() => {
     setSelectedIndex(0)
@@ -27,7 +38,9 @@ export function useIME() {
 
   function onChange(e: any) {
     const value = e.target.value
-    const candidateObjects = lookupInputTransliterationCandidates(e.target.value)
+    const inputLookupMethod = InputLookupMethodMapping[selectedInputMode]
+    const candidateObjects = inputLookupMethod(e.target.value)
+
     setCandidates(candidateObjects)
     setInputString(value)
   }
@@ -74,6 +87,8 @@ export function useIME() {
     candidates,
     selectedIndex,
     handleKeyDown,
+    selectedInputMode,
+    setSelectedInputMode,
   }
 }
 
