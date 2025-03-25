@@ -60,9 +60,25 @@ export function useDatabase() {
     return result
   }
 
+  function lookupInputGardinerCandidates(input: string): HieroglyphModel[] {
+    if(input.trim() === '') return []
+    const query = `select * from hieroglyphs where gardiner_code like '${input}%'`
+    const result: HieroglyphModel[] = databaseLookup(query)
+    return result
+  }
+
+  function lookupInputDescriptionCandidates(input: string): HieroglyphModel[] {
+    if(input.trim() === '') return []
+    const query = `select * from hieroglyphs where description_words like '%${input}%'`
+    const result: HieroglyphModel[] = databaseLookup(query)
+    return result
+  }
+
   return {
     lookupInputTransliteration,
     lookupInputTransliterationCandidates,
+    lookupInputGardinerCandidates,
+    lookupInputDescriptionCandidates,
   }
 
 

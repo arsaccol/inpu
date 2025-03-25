@@ -9,11 +9,20 @@ export enum InputMode {
 }
 
 
+
 export function useIME() {
 
   const { 
     lookupInputTransliterationCandidates,
+    lookupInputGardinerCandidates,
+    lookupInputDescriptionCandidates,
   } = useDatabase()
+
+  const InputLookupMethodMapping = {
+    [InputMode.PHONOGRAM]: lookupInputTransliterationCandidates,
+    [InputMode.GARDINER]: lookupInputGardinerCandidates,
+    [InputMode.KEYWORDS]: lookupInputDescriptionCandidates,
+  }
 
   const [inputString, setInputString] = useState<string>('')
   const [outputString, setOutputString] = useState<string>('')
@@ -29,7 +38,9 @@ export function useIME() {
 
   function onChange(e: any) {
     const value = e.target.value
-    const candidateObjects = lookupInputTransliterationCandidates(e.target.value)
+    const inputLookupMethod = InputLookupMethodMapping[selectedInputMode]
+    const candidateObjects = inputLookupMethod(e.target.value)
+
     setCandidates(candidateObjects)
     setInputString(value)
   }
