@@ -4,6 +4,7 @@ import { TextField } from '@mui/material'
 import { Box } from '@mui/material'
 import { Typography } from '@mui/material'
 import { CandidatesMenu } from './CandidatesMenu'
+import { InputModeSelect } from './InputModeSelect'
 
 
 
@@ -16,6 +17,8 @@ export function MaterialIME() {
     selectCandidate,
     selectedIndex,
     handleKeyDown,
+    selectedInputMode,
+    setSelectedInputMode,
   } = useIME()
 
   const [isFocused, setIsFocused] = useState(false)
@@ -53,23 +56,29 @@ export function MaterialIME() {
           {outputString}
         </Typography>
       </Box>
-      <TextField
-        label=""
-        variant="outlined"
-        value={inputString}
-        onChange={onChange}
-        onKeyDown={handleKeyDown}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-        fullWidth
-        InputProps={{
-          sx: {
-            backgroundColor: 'var(--background-color-brighter)',
-            color: 'var(--text-color)',
-            borderColor: 'var(--border-color)',
-          }
-        }}
-      />
+      <Box sx={{display: "flex", flexDirection: "row", gap: "50px"}}>
+        <InputModeSelect 
+          selectedInputMode={selectedInputMode} 
+          setSelectedInputMode={setSelectedInputMode}
+        />
+        <TextField
+          label=""
+          variant="outlined"
+          value={inputString}
+          onChange={onChange}
+          onKeyDown={handleKeyDown}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          fullWidth
+          InputProps={{
+            sx: {
+              backgroundColor: 'var(--background-color-brighter)',
+              color: 'var(--text-color)',
+              borderColor: 'var(--border-color)',
+            }
+          }}
+        />
+      </Box>
       {isMenuVisible && candidates!.length > 0 && (
         <CandidatesMenu 
           candidates={candidates} 

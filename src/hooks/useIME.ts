@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react'
 import { useDatabase } from './useDatabase'
 import { HieroglyphModel } from '../models/Hieroglyph.type'
 
-//enum InputModes {
-//  PHONOGRAM,
-//  GARDINER,
-//  KEYWORDS,
-//}
+export enum InputMode {
+  PHONOGRAM = "Phonogram",
+  GARDINER = "Gardiner Code",
+  KEYWORDS = "Keywords",
+}
 
 
 export function useIME() {
@@ -19,6 +19,8 @@ export function useIME() {
   const [outputString, setOutputString] = useState<string>('')
   const [candidates, setCandidates] = useState<HieroglyphModel[]>([])
   const [selectedIndex, setSelectedIndex] = useState<number>(0)
+
+  const [selectedInputMode, setSelectedInputMode] = useState<InputMode>(InputMode.PHONOGRAM)
 
   useEffect(() => {
     setSelectedIndex(0)
@@ -74,6 +76,8 @@ export function useIME() {
     candidates,
     selectedIndex,
     handleKeyDown,
+    selectedInputMode,
+    setSelectedInputMode,
   }
 }
 
