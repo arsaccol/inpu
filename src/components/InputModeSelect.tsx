@@ -17,7 +17,7 @@ export function InputModeSelect(props: InputModeSelectProps) {
   return (
       <div style={{ display: "flex", minWidth: "175px", /*backgroundColor: "red"*/}}>
       <FormControl fullWidth sx={{
-        m: 1, minWidth: 80,
+        width: '10em',
         backgroundColor: 'var(--background-color-brighter)',
         color: 'var(--text-color)',
         borderColor: 'var(--border-color)',
