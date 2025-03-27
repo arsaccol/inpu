@@ -56,7 +56,12 @@ export function MaterialIME() {
           {outputString}
         </Typography>
       </Box>
-      <Box sx={{display: "flex", flexDirection: "row", alignItems: "center", gap: "20px"}}>
+      <Box sx={{
+        display: "flex", 
+        flexDirection: {xs: "column", sm: "row"}, 
+        alignItems: {xs: "flex-start", sm:"center" }, 
+        gap: "20px",
+      }}>
         <InputModeSelect 
           selectedInputMode={selectedInputMode} 
           setSelectedInputMode={setSelectedInputMode}
