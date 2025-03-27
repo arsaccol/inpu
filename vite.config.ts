@@ -10,5 +10,5 @@ export default defineConfig({
       fileRegex: /\.sql$/
     }),
   ],
-  //base: "/inpu/"
+  base: "/inpu/",
 })
