@@ -1,50 +1,12 @@
-# React + TypeScript + Vite
+# 𓇋𓈖𓊪𓅱𓏟 Inpu - Hieroglyphic Input
+---
+**Ancient Egyptian hieroglyphic input** inspired by Japanese [IME](https://en.wikipedia.org/wiki/Input_method), on the web. 
+Demo currently hosted **[here](https://inpu.vercel.app)**.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
+---
+Select an input mode between phonographic transliteration, Gardiner codes, and hieroglyph description keywords; type away, select your hieroglyph between the set of candidates presented, and the output will be [Unicode characters](https://en.wikipedia.org/wiki/Egyptian_Hieroglyphs_(Unicode_block)) that can have common text-processing tasks performed on them, like copying and searching.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Note that the [hieroglyph set](https://github.com/arsaccol/inpu/blob/main/src/assets/hieroglyph_data.sql) is still incomplete, and we are working on expanding it. 
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+Your suggestions and contributions are welcome! You may use [issues](https://github.com/arsaccol/inpu/issues) to provide feedback, report bugs, and so on. Feel free to use [this Google form](https://forms.gle/iGvfAd5toML9Gxt57) as well. We welcome PRs as well! We ask you to write an issue first stating what you intend to implement.

@@ -7,8 +7,8 @@ function App() {
   return (
     <>
       <div>
-        <h1>𓇋𓈖𓊪𓅱 (α)</h1>
-        Hieroglyphic input for the modern scribe.
+        <h1>𓇋𓈖𓊪𓅱𓏟 (α)</h1>
+        Hieroglyphic computer input for the modern scribe.
       </div>
           <Typography sx={{fontSize: '12px'}}>
             <a 
