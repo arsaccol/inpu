@@ -9,4 +9,4 @@ Select an input mode between phonographic transliteration, Gardiner codes, and h
 
 Note that the [hieroglyph set](https://github.com/arsaccol/inpu/blob/main/src/assets/hieroglyph_data.sql) is still incomplete, and we are working on expanding it. 
 
-Your suggestions and contributions are welcome! You may use [issues](https://github.com/arsaccol/inpu/issues) to provide feedback, report bugs, and so on. Feel free to use [this Google form](https://forms.gle/iGvfAd5toML9Gxt57) as well. We welcome PRs as well! We ask you to write an issue first stating what you intend to implement.
+Your suggestions and contributions are welcome! You may use [issues](https://github.com/arsaccol/inpu/issues) to provide feedback, report bugs, and so on. Feel free to use [this Google form](https://forms.gle/iGvfAd5toML9Gxt57) as well. Pull requests are welcome, too! If you want to make a contribution with a PR, consider writing an issue first so we understand what you intend to implement, and then address the issue in your PR, or directly make your PR addressing an already existing issue.
