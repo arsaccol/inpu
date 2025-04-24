@@ -4,6 +4,7 @@ import viteRawPlugin from 'vite-raw-plugin'
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: './',
   plugins: [
     react(),
     viteRawPlugin({
