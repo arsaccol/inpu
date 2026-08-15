@@ -1,7 +1,8 @@
 import initSqlJs from 'sql.js';
 import { Database } from 'sql.js'
-import schema from '../assets/schema.sql?raw';
-import hieroglyph_data from '../assets/hieroglyph_data.sql?raw';
+import schema from '../assets/001_schema.sql?raw';
+import hieroglyphData from '../assets/002_hieroglyph_data.sql?raw';
+import gardinerSignData from '../assets/003_gardiner_sign_data.sql?raw';
 import { useState, useEffect } from 'react'
 import { HieroglyphModel } from '../models/Hieroglyph.type';
 
@@ -18,10 +19,11 @@ export function useDatabase() {
 
       const db = new SQL.Database()
       if(!db) throw new Error("Could not initialize database");
-      setDatabase(db)
 
       db.run(schema)
-      db.run(hieroglyph_data)
+      db.run(hieroglyphData)
+      db.run(gardinerSignData)
+      setDatabase(db)
     })()
 
   }, [])
