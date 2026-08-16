@@ -66,7 +66,11 @@ export function useDatabase() {
     if(input.trim() === '') return []
     const query = `select * from hieroglyphs where gardiner_code like '${input}%'`
     const result: HieroglyphModel[] = databaseLookup(query)
-    return result
+    return result.sort((a, b) => a.gardiner_code.localeCompare(
+      b.gardiner_code,
+      undefined,
+      { numeric: true, sensitivity: 'base' },
+    ))
   }
 
   function lookupInputDescriptionCandidates(input: string): HieroglyphModel[] {
