@@ -5,5 +5,49 @@
   text-align: center;
 }
 
+.review-page {
+  margin: 0 auto;
+  max-width: 1600px;
+  text-align: left;
+}
+
+.review-heading {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.review-loading {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  min-height: 320px;
+}
+
+.review-summary {
+  align-items: baseline;
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+}
+
+.review-table-container {
+  max-height: calc(100vh - 300px);
+}
+
+.review-glyph {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+@media (max-width: 700px) {
+  .review-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
 
 

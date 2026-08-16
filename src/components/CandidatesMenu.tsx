@@ -4,7 +4,7 @@ import { useRef, useEffect } from 'react'
 import { HieroglyphModel } from '../models/Hieroglyph.type'
 
 export interface CandidatesMenuProps {
-  candidates: any[];
+  candidates: HieroglyphModel[];
   selectedIndex: number;
   selectCandidate: (candidate: HieroglyphModel) => void;
 }

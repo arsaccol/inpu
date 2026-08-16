@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, ChangeEvent } from 'react'
 import { useDatabase } from './useDatabase'
 import { HieroglyphModel } from '../models/Hieroglyph.type'
 
@@ -36,7 +36,7 @@ export function useIME() {
   }, [candidates])
 
 
-  function onChange(e: any) {
+  function onChange(e: ChangeEvent<HTMLInputElement>) {
     const value = e.target.value
     const inputLookupMethod = InputLookupMethodMapping[selectedInputMode]
     const candidateObjects = inputLookupMethod(e.target.value)
@@ -91,4 +91,3 @@ export function useIME() {
     setSelectedInputMode,
   }
 }
-

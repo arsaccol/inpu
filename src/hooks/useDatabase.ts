@@ -14,7 +14,7 @@ export function useDatabase() {
   useEffect(() => {
     (async function() {
       const SQL = await initSqlJs({
-        locateFile: (_) => '/sql-wasm.wasm'
+        locateFile: () => '/sql-wasm.wasm'
       })
 
       const db = new SQL.Database()
@@ -28,22 +28,22 @@ export function useDatabase() {
 
   }, [])
 
-  function databaseLookup(query: string) {
+  function databaseLookup<T>(query: string): T[] {
     if(!database) throw new Error("Database not initialized before performing query")
     const results = database.exec(query)
     if(results.length === 0) return []
 
     // massage data into proper objects before returning
     const { columns, values } = results[0]
-    const objects = []
+    const objects: T[] = []
 
     for(const val of values) {
-      const object: any = {}
+      const object: Record<string, unknown> = {}
       for(let i = 0; i < columns.length; i++) {
         object[columns[i]] = val[i]
       }
 
-      objects.push(object)
+      objects.push(object as T)
     }
 
     return objects
@@ -80,11 +80,18 @@ export function useDatabase() {
     return result
   }
 
+  function getAllHieroglyphs(): HieroglyphModel[] {
+    if(!database) return []
+    return databaseLookup<HieroglyphModel>('select * from hieroglyphs')
+  }
+
   return {
     lookupInputTransliteration,
     lookupInputTransliterationCandidates,
     lookupInputGardinerCandidates,
     lookupInputDescriptionCandidates,
+    getAllHieroglyphs,
+    isDatabaseReady: database !== null,
   }
 
 
