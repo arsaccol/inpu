@@ -1,8 +1,8 @@
 import initSqlJs from 'sql.js';
 import { Database } from 'sql.js'
-import schema from '../assets/001_schema.sql?raw';
-import hieroglyphData from '../assets/002_hieroglyph_data.sql?raw';
-import gardinerSignData from '../assets/003_gardiner_sign_data.sql?raw';
+import schema from '../../inpu-db/001_schema.sql?raw';
+import hieroglyphData from '../../inpu-db/002_hieroglyph_data.sql?raw';
+import gardinerSignData from '../../inpu-db/003_gardiner_sign_data.sql?raw';
 import { useState, useEffect } from 'react'
 import { HieroglyphModel } from '../models/Hieroglyph.type';
 
