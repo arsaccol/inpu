@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react'
 import { useIME } from '../hooks/useIME'
 import { TextField } from '@mui/material'
 import { Box } from '@mui/material'
-import { Typography } from '@mui/material'
 import { CandidatesMenu } from './CandidatesMenu'
 import { InputModeSelect } from './InputModeSelect'
+import { HieroglyphOutput } from './HieroglyphOutput'
 
 
 
@@ -42,25 +42,21 @@ export function MaterialIME() {
 
 
   return (
-    <Box sx={{ position: 'relative', display: 'inline-block', width: '100%' }}>
-      <Box sx={{
-          height: 100,
-          overflowWrap: 'break-word',
-          backgroundColor: 'var(--background-color)',
-          border: '1px solid var(--background-color)',
-          padding: 1,
-          marginBottom: 2
-        }}
-      >
-        <Typography variant="h3" sx={{ fontWeight: 'bold' }}>
-          {outputString}
-        </Typography>
-      </Box>
+    <Box sx={{
+      display: 'block',
+      maxWidth: '100%',
+      mx: 'auto',
+      position: 'relative',
+      textAlign: 'left',
+      width: { xs: '100%', sm: '445px' },
+    }}>
+      <HieroglyphOutput value={outputString} />
       <Box sx={{
         display: "flex", 
         flexDirection: {xs: "column", sm: "row"}, 
         alignItems: {xs: "flex-start", sm:"center" }, 
         gap: "20px",
+        width: '100%',
       }}>
         <InputModeSelect 
           selectedInputMode={selectedInputMode} 
@@ -74,7 +70,11 @@ export function MaterialIME() {
           onKeyDown={handleKeyDown}
           onFocus={handleFocus}
           onBlur={handleBlur}
-          fullWidth
+          sx={{
+            flex: { xs: '0 0 auto', sm: '0 0 250px' },
+            maxWidth: '100%',
+            width: '250px',
+          }}
           InputProps={{
             sx: {
               backgroundColor: 'var(--background-color-brighter)',

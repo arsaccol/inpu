@@ -1,0 +1,68 @@
+import { useEffect, useRef } from 'react'
+import { Box, Typography } from '@mui/material'
+
+export interface HieroglyphOutputProps {
+  value: string
+}
+
+const lineHeight = 1.2
+const visibleLines = 4
+
+export function HieroglyphOutput({ value }: HieroglyphOutputProps) {
+  const outputRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const output = outputRef.current
+    if (output) {
+      output.scrollTop = output.scrollHeight
+    }
+  }, [value])
+
+  return (
+    <Box
+      sx={{
+        boxSizing: 'border-box',
+        direction: 'ltr',
+        fontSize: { xs: '2.25rem', sm: '3rem' },
+        height: `calc(${visibleLines * lineHeight}em + 16px)`,
+        mb: 2,
+        textAlign: 'left',
+        width: '100%',
+      }}
+    >
+      <Box
+        ref={outputRef}
+        role="status"
+        aria-label="Hieroglyph output"
+        sx={{
+          backgroundColor: 'var(--background-color)',
+          border: '1px solid var(--background-color)',
+          boxSizing: 'border-box',
+          maxHeight: `calc(${visibleLines * lineHeight}em + 16px)`,
+          minHeight: `calc(${lineHeight}em + 16px)`,
+          overflowWrap: 'anywhere',
+          overflowX: 'hidden',
+          overflowY: 'auto',
+          p: 1,
+          direction: 'ltr',
+          textAlign: 'left',
+          whiteSpace: 'pre-wrap',
+          width: '100%',
+        }}
+      >
+        <Typography
+          component="div"
+          sx={{
+            fontSize: 'inherit',
+            fontWeight: 'bold',
+            lineHeight,
+            textAlign: 'left',
+            width: '100%',
+          }}
+        >
+          {value}
+        </Typography>
+      </Box>
+    </Box>
+  )
+}
