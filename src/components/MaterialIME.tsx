@@ -68,7 +68,6 @@ export function MaterialIME() {
           setSelectedInputMode={setSelectedInputMode}
         />
         <TextField
-          label=""
           placeholder={inputModePlaceholders[selectedInputMode]}
           variant="outlined"
           value={inputString}
@@ -86,6 +85,10 @@ export function MaterialIME() {
               backgroundColor: 'var(--background-color-brighter)',
               color: 'var(--text-color)',
               borderColor: 'var(--border-color)',
+              '& .MuiInputBase-input::placeholder': {
+                color: 'text.secondary',
+                opacity: 1,
+              },
             }
           }}
           inputProps={{
