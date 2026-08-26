@@ -1,6 +1,6 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import { Box, IconButton, SvgIcon } from '@mui/material'
-import { CopyFeedback } from './CopyFeedback'
+import { OutputFeedback } from './OutputFeedback'
 
 export interface CopyButtonProps {
   value: string
@@ -56,6 +56,8 @@ export function CopyButton({ value }: CopyButtonProps) {
   return (
     <Box
       sx={{
+        display: 'flex',
+        height: 34,
         position: 'relative',
       }}
     >
@@ -132,7 +134,7 @@ export function CopyButton({ value }: CopyButtonProps) {
           </Box>
         </Box>
       </IconButton>
-      <CopyFeedback id={feedbackId} visible={copied} />
+      <OutputFeedback id={feedbackId} message="Copied to clipboard!" visible={copied} />
     </Box>
   )
 }
