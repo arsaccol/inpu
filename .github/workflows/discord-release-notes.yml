@@ -1,0 +1,85 @@
+name: Discord release notes
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, edited, closed]
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  require-repository-branch:
+    if: github.event.action != 'closed'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Reject pull requests from forks
+        env:
+          HEAD_REPOSITORY: ${{ github.event.pull_request.head.repo.full_name }}
+          BASE_REPOSITORY: ${{ github.repository }}
+        run: |
+          if [ "$HEAD_REPOSITORY" != "$BASE_REPOSITORY" ]; then
+            echo "::error::Outside contributors must open pull requests against dev, not main."
+            exit 1
+          fi
+
+  announce:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Collect commit messages
+        id: commits
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          gh api \
+            "repos/${{ github.repository }}/pulls/${PR_NUMBER}/commits" \
+            --paginate \
+            --jq '.[].commit.message | split("\n")[0] | "• " + .' \
+            > commits.txt
+
+      - name: Send release notes to Discord
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          DISCORD_THREAD_ID: ${{ vars.DISCORD_THREAD_ID }}
+
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+
+        run: |
+          : "${DISCORD_WEBHOOK_URL:?DISCORD_WEBHOOK_URL secret is not configured}"
+          : "${DISCORD_THREAD_ID:?DISCORD_THREAD_ID variable is not configured}"
+
+          COMMITS="$(cat commits.txt)"
+
+          CONTENT="$(printf '🚀 **%s**\n\n%s\n\nMerged from PR #%s by **%s**\n%s' \
+            "$PR_TITLE" \
+            "$COMMITS" \
+            "$PR_NUMBER" \
+            "$PR_AUTHOR" \
+            "$PR_URL")"
+
+          # Discord messages are limited to 2000 characters.
+          if [ "${#CONTENT}" -gt 1950 ]; then
+            CONTENT="${CONTENT:0:1850}
+
+          …commit list truncated.
+
+          $PR_URL"
+          fi
+
+          jq -n \
+            --arg content "$CONTENT" \
+            '{content: $content, allowed_mentions: {parse: []}}' \
+            | curl \
+                --fail-with-body \
+                -H "Content-Type: application/json" \
+                -d @- \
+                "${DISCORD_WEBHOOK_URL}?thread_id=${DISCORD_THREAD_ID}&wait=true"
