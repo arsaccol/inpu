@@ -1,11 +1,16 @@
 import { useState, useEffect } from 'react'
-import { useIME } from '../hooks/useIME'
+import { InputMode, useIME } from '../hooks/useIME'
 import { TextField } from '@mui/material'
 import { Box } from '@mui/material'
 import { CandidatesMenu } from './CandidatesMenu'
 import { InputModeSelect } from './InputModeSelect'
 import { HieroglyphOutput } from './HieroglyphOutput'
 
+const inputModePlaceholders: Record<InputMode, string> = {
+  [InputMode.PHONOGRAM]: 'Try “anx”',
+  [InputMode.GARDINER]: 'Try “Y3”',
+  [InputMode.KEYWORDS]: 'Try “man”',
+}
 
 
 export function MaterialIME() {
@@ -64,6 +69,7 @@ export function MaterialIME() {
         />
         <TextField
           label=""
+          placeholder={inputModePlaceholders[selectedInputMode]}
           variant="outlined"
           value={inputString}
           onChange={onChange}
@@ -81,6 +87,9 @@ export function MaterialIME() {
               color: 'var(--text-color)',
               borderColor: 'var(--border-color)',
             }
+          }}
+          inputProps={{
+            'aria-label': `${selectedInputMode} input`,
           }}
         />
       </Box>
