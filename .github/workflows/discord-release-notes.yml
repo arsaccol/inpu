@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Collect commit messages
+      - name: Collect commit details
         id: commits
         env:
           GH_TOKEN: ${{ github.token }}
@@ -40,7 +40,10 @@ jobs:
           gh api \
             "repos/${{ github.repository }}/pulls/${PR_NUMBER}/commits" \
             --paginate \
-            --jq '.[].commit.message | split("\n")[0] | "• " + .' \
+            --jq '.[] |
+              (.author.login // .commit.author.name // "unknown contributor") as $author |
+              (.commit.message | split("\n")[0]) as $message |
+              "• \($message) — by \($author)"' \
             > commits.txt
 
       - name: Send release notes to Discord
@@ -51,7 +54,6 @@ jobs:
           PR_TITLE: ${{ github.event.pull_request.title }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
           PR_URL: ${{ github.event.pull_request.html_url }}
-          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
 
         run: |
           : "${DISCORD_WEBHOOK_URL:?DISCORD_WEBHOOK_URL secret is not configured}"
@@ -59,11 +61,10 @@ jobs:
 
           COMMITS="$(cat commits.txt)"
 
-          CONTENT="$(printf '🚀 **%s**\n\n%s\n\nMerged from PR #%s by **%s**\n%s' \
+          CONTENT="$(printf '🚀 **%s**\n\n%s\n\nMerged from PR #%s\n%s' \
             "$PR_TITLE" \
             "$COMMITS" \
             "$PR_NUMBER" \
-            "$PR_AUTHOR" \
             "$PR_URL")"
 
           # Discord messages are limited to 2000 characters.
