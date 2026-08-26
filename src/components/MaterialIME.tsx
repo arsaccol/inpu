@@ -18,6 +18,7 @@ export function MaterialIME() {
     inputString,
     outputString,
     onChange,
+    clearOutput,
     candidates,
     selectCandidate,
     selectedIndex,
@@ -56,7 +57,7 @@ export function MaterialIME() {
       textAlign: 'left',
       width: { xs: '100%', sm: '445px' },
     }}>
-      <HieroglyphOutput value={outputString} />
+      <HieroglyphOutput value={outputString} onClear={clearOutput} />
       <Box ref={inputAreaRef} sx={{
         display: "flex", 
         flexDirection: {xs: "column", sm: "row"}, 

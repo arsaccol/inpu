@@ -50,6 +50,10 @@ export function useIME() {
     setCandidates([])
   }
 
+  function clearOutput() {
+    setOutputString('')
+  }
+
   function selectCandidate(candidate: HieroglyphModel) {
     setOutputString(outputString + candidate.glyph)
     clearInput()
@@ -83,6 +87,7 @@ export function useIME() {
     inputString,
     outputString,
     clearInput,
+    clearOutput,
     selectCandidate,
     candidates,
     selectedIndex,

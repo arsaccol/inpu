@@ -1,8 +1,9 @@
 import { useEffect, useRef } from 'react'
 import { Box, Typography } from '@mui/material'
-import { CopyButton } from './CopyButton'
+import { OutputUtilities } from './OutputUtilities'
 
 export interface HieroglyphOutputProps {
+  onClear: () => void
   value: string
 }
 
@@ -10,7 +11,7 @@ const lineHeight = 1.5
 const reservedLines = 3
 const visibleLines = 4
 
-export function HieroglyphOutput({ value }: HieroglyphOutputProps) {
+export function HieroglyphOutput({ onClear, value }: HieroglyphOutputProps) {
   const outputRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -48,7 +49,7 @@ export function HieroglyphOutput({ value }: HieroglyphOutputProps) {
           overflowX: 'hidden',
           overflowY: 'auto',
           p: 1,
-          pr: 6,
+          pr: 12,
           direction: 'ltr',
           textAlign: 'left',
           whiteSpace: 'pre-wrap',
@@ -69,7 +70,7 @@ export function HieroglyphOutput({ value }: HieroglyphOutputProps) {
           {value}
         </Typography>
       </Box>
-      <CopyButton value={value} />
+      <OutputUtilities value={value} onClear={onClear} />
     </Box>
   )
 }

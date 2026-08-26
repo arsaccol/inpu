@@ -56,9 +56,7 @@ export function CopyButton({ value }: CopyButtonProps) {
   return (
     <Box
       sx={{
-        position: 'absolute',
-        right: 8,
-        top: 8,
+        position: 'relative',
       }}
     >
       <IconButton
@@ -72,6 +70,7 @@ export function CopyButton({ value }: CopyButtonProps) {
         sx={(theme) => ({
           backgroundColor: copied ? 'success.main' : 'transparent',
           color: copied ? 'success.contrastText' : 'text.primary',
+          height: 34,
           transition: theme.transitions.create(
             ['background-color', 'color', 'transform'],
             { duration: theme.transitions.duration.shorter },
@@ -86,6 +85,7 @@ export function CopyButton({ value }: CopyButtonProps) {
           '&:hover': {
             backgroundColor: copied ? 'success.dark' : 'action.hover',
           },
+          width: 34,
           '@media (prefers-reduced-motion: reduce)': {
             transition: 'none',
           },
