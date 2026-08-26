@@ -1,8 +1,9 @@
-import { useEffect, useId, useRef, useState } from 'react'
+import { Ref, useEffect, useId, useRef, useState } from 'react'
 import { Box, IconButton, SvgIcon } from '@mui/material'
-import { CopyFeedback } from './CopyFeedback'
+import { OutputFeedback } from './OutputFeedback'
 
 export interface CopyButtonProps {
+  buttonRef?: Ref<HTMLButtonElement>
   value: string
 }
 
@@ -24,7 +25,7 @@ function CheckIcon() {
   )
 }
 
-export function CopyButton({ value }: CopyButtonProps) {
+export function CopyButton({ buttonRef, value }: CopyButtonProps) {
   const [copied, setCopied] = useState(false)
   const feedbackId = useId()
   const feedbackTimer = useRef<number | null>(null)
@@ -56,22 +57,24 @@ export function CopyButton({ value }: CopyButtonProps) {
   return (
     <Box
       sx={{
-        position: 'absolute',
-        right: 8,
-        top: 8,
+        display: 'flex',
+        height: 34,
+        position: 'relative',
       }}
     >
       <IconButton
+        ref={buttonRef}
         aria-describedby={copied ? feedbackId : undefined}
         aria-label="Copy hieroglyph output"
         disabled={!value}
         disableRipple
         onClick={copyOutput}
-        title="Copy output"
+        title="Copy output (Ctrl+C)"
         size="small"
         sx={(theme) => ({
           backgroundColor: copied ? 'success.main' : 'transparent',
           color: copied ? 'success.contrastText' : 'text.primary',
+          height: 34,
           transition: theme.transitions.create(
             ['background-color', 'color', 'transform'],
             { duration: theme.transitions.duration.shorter },
@@ -86,6 +89,7 @@ export function CopyButton({ value }: CopyButtonProps) {
           '&:hover': {
             backgroundColor: copied ? 'success.dark' : 'action.hover',
           },
+          width: 34,
           '@media (prefers-reduced-motion: reduce)': {
             transition: 'none',
           },
@@ -132,7 +136,7 @@ export function CopyButton({ value }: CopyButtonProps) {
           </Box>
         </Box>
       </IconButton>
-      <CopyFeedback id={feedbackId} visible={copied} />
+      <OutputFeedback id={feedbackId} message="Copied to clipboard!" visible={copied} />
     </Box>
   )
 }

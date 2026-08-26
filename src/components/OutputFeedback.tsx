@@ -1,11 +1,12 @@
 import { Box } from '@mui/material'
 
-export interface CopyFeedbackProps {
+export interface OutputFeedbackProps {
   id: string
+  message: string
   visible: boolean
 }
 
-export function CopyFeedback({ id, visible }: CopyFeedbackProps) {
+export function OutputFeedback({ id, message, visible }: OutputFeedbackProps) {
   return (
     <Box
       aria-hidden={!visible}
@@ -52,7 +53,7 @@ export function CopyFeedback({ id, visible }: CopyFeedbackProps) {
         },
       })}
     >
-      Copied to clipboard!
+      {message}
     </Box>
   )
 }
