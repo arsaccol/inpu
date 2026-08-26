@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { InputMode, useIME } from '../hooks/useIME'
 import { TextField } from '@mui/material'
 import { Box } from '@mui/material'
@@ -28,6 +28,7 @@ export function MaterialIME() {
 
   const [isFocused, setIsFocused] = useState(false)
   const [isMenuVisible, setIsMenuVisible] = useState(false)
+  const inputAreaRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     setIsMenuVisible(isFocused && candidates.length > 0)
@@ -56,7 +57,7 @@ export function MaterialIME() {
       width: { xs: '100%', sm: '445px' },
     }}>
       <HieroglyphOutput value={outputString} />
-      <Box sx={{
+      <Box ref={inputAreaRef} sx={{
         display: "flex", 
         flexDirection: {xs: "column", sm: "row"}, 
         alignItems: {xs: "flex-start", sm:"center" }, 
@@ -98,6 +99,7 @@ export function MaterialIME() {
       </Box>
       {isMenuVisible && candidates!.length > 0 && (
         <CandidatesMenu 
+          anchorElement={inputAreaRef.current}
           candidates={candidates} 
           selectedIndex={selectedIndex}
           selectCandidate={selectCandidate}

@@ -6,7 +6,8 @@ export interface HieroglyphOutputProps {
   value: string
 }
 
-const lineHeight = 1.2
+const lineHeight = 1.5
+const reservedLines = 3
 const visibleLines = 4
 
 export function HieroglyphOutput({ value }: HieroglyphOutputProps) {
@@ -25,8 +26,9 @@ export function HieroglyphOutput({ value }: HieroglyphOutputProps) {
         boxSizing: 'border-box',
         direction: 'ltr',
         fontSize: { xs: '2.25rem', sm: '3rem' },
-        height: `calc(${visibleLines * lineHeight}em + 16px)`,
-        mb: 2,
+        mb: 3,
+        minHeight: `calc(${reservedLines * lineHeight}em + 16px)`,
+        mt: { xs: 6, sm: 8 },
         position: 'relative',
         textAlign: 'left',
         width: '100%',
@@ -58,6 +60,7 @@ export function HieroglyphOutput({ value }: HieroglyphOutputProps) {
           sx={{
             fontSize: 'inherit',
             fontWeight: 'bold',
+            letterSpacing: '0.08em',
             lineHeight,
             textAlign: 'left',
             width: '100%',
