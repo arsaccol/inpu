@@ -32,12 +32,31 @@ export function MaterialIME() {
   const [isFocused, setIsFocused] = useState(false)
   const [isMenuVisible, setIsMenuVisible] = useState(false)
   const inputAreaRef = useRef<HTMLDivElement>(null)
+  const textInputRef = useRef<HTMLInputElement>(null)
   const candidatesMenuRef = useRef<CandidatesMenuHandle>(null)
 
   useEffect(() => {
     setIsMenuVisible(isFocused && candidates.length > 0)
   }, [isFocused, candidates])
 
+  useEffect(() => {
+    function cycleInputMode(e: KeyboardEvent) {
+      if (e.key !== 'Tab') return
+
+      e.preventDefault()
+
+      const currentIndex = inputModes.indexOf(selectedInputMode)
+      const direction = e.shiftKey ? -1 : 1
+      const nextIndex = (currentIndex + direction + inputModes.length) % inputModes.length
+
+      setSelectedInputMode(inputModes[nextIndex])
+      textInputRef.current?.focus()
+    }
+
+    document.addEventListener('keydown', cycleInputMode)
+
+    return () => document.removeEventListener('keydown', cycleInputMode)
+  }, [selectedInputMode, setSelectedInputMode])
 
   function handleFocus() {
     setIsFocused(true)
@@ -47,21 +66,10 @@ export function MaterialIME() {
     const relatedTarget = e.relatedTarget as HTMLElement
       if(!relatedTarget?.closest('[role="menu"]')) {
         setIsFocused(false)
-      }
+    }
   }
 
   function handleInputKeyDown(e: React.KeyboardEvent) {
-    if (e.key === 'Tab') {
-      e.preventDefault()
-
-      const currentIndex = inputModes.indexOf(selectedInputMode)
-      const direction = e.shiftKey ? -1 : 1
-      const nextIndex = (currentIndex + direction + inputModes.length) % inputModes.length
-
-      setSelectedInputMode(inputModes[nextIndex])
-      return
-    }
-
     if (e.key === ' ') {
       e.preventDefault()
 
@@ -127,6 +135,7 @@ export function MaterialIME() {
         />
         <TextField
           autoFocus
+          inputRef={textInputRef}
           placeholder={inputModePlaceholders[selectedInputMode]}
           variant="outlined"
           value={inputString}
