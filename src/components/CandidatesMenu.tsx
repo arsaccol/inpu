@@ -24,6 +24,7 @@ export const CandidatesMenu = forwardRef<CandidatesMenuHandle, CandidatesMenuPro
 
   const menuRef = useRef<HTMLDivElement | null>(null)
   const selectedRef = useRef<HTMLDivElement | null>(null)
+  const isPagingRef = useRef(false)
 
   useImperativeHandle(ref, () => ({
     scrollByPage(direction) {
@@ -38,7 +39,8 @@ export const CandidatesMenu = forwardRef<CandidatesMenuHandle, CandidatesMenuPro
         ),
       )
 
-      menu.scrollTop = nextScrollTop
+      isPagingRef.current = true
+      menu.scrollTo({ behavior: 'smooth', top: nextScrollTop })
 
       const firstVisibleIndex = Array.from(menu.children).findIndex((item) => (
         item instanceof HTMLElement
@@ -52,6 +54,11 @@ export const CandidatesMenu = forwardRef<CandidatesMenuHandle, CandidatesMenuPro
   }), [])
 
   useEffect(() => {
+    if (isPagingRef.current) {
+      isPagingRef.current = false
+      return
+    }
+
     if(selectedRef.current) {
       selectedRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
     }
