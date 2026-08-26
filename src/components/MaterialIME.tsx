@@ -62,12 +62,39 @@ export function MaterialIME() {
       return
     }
 
+    if (e.key === ' ') {
+      e.preventDefault()
+
+      if (isMenuVisible) {
+        setSelectedCandidateIndex((selectedIndex + 1) % candidates.length)
+      }
+
+      return
+    }
+
     if (isMenuVisible && (e.key === 'PageDown' || e.key === 'PageUp')) {
       e.preventDefault()
       const nextIndex = candidatesMenuRef.current?.scrollByPage(e.key === 'PageDown' ? 1 : -1)
 
       if (nextIndex !== null && nextIndex !== undefined && nextIndex >= 0) {
         setSelectedCandidateIndex(nextIndex)
+      }
+
+      return
+    }
+
+    if (
+      isMenuVisible
+      && selectedInputMode !== InputMode.GARDINER
+      && /^[0-9]$/.test(e.key)
+    ) {
+      e.preventDefault()
+
+      const shortcutIndex = e.key === '0' ? 9 : Number(e.key) - 1
+      const candidateIndex = candidatesMenuRef.current?.getVisibleCandidateIndex(shortcutIndex)
+
+      if (candidateIndex !== null && candidateIndex !== undefined) {
+        selectCandidate(candidates[candidateIndex])
       }
 
       return
@@ -84,7 +111,7 @@ export function MaterialIME() {
       mx: 'auto',
       position: 'relative',
       textAlign: 'left',
-      width: { xs: '100%', sm: '445px' },
+      width: { xs: '100%', sm: '520px' },
     }}>
       <HieroglyphOutput value={outputString} onClear={clearOutput} />
       <Box ref={inputAreaRef} sx={{
@@ -135,6 +162,7 @@ export function MaterialIME() {
           candidates={candidates} 
           selectedIndex={selectedIndex}
           selectCandidate={selectCandidate}
+          showShortcuts={selectedInputMode !== InputMode.GARDINER}
         />
     )}
   </Box>

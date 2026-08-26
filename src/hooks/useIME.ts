@@ -37,7 +37,7 @@ export function useIME() {
 
 
   function onChange(e: ChangeEvent<HTMLInputElement>) {
-    const value = e.target.value
+    const value = e.target.value.replace(/ /g, '')
     const inputLookupMethod = InputLookupMethodMapping[selectedInputMode]
     const candidateObjects = inputLookupMethod(e.target.value)
 
