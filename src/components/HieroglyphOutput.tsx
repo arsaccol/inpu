@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
-import { Box, IconButton, SvgIcon, Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
+import { CopyButton } from './CopyButton'
 
 export interface HieroglyphOutputProps {
   value: string
@@ -7,14 +8,6 @@ export interface HieroglyphOutputProps {
 
 const lineHeight = 1.2
 const visibleLines = 4
-
-function CopyIcon() {
-  return (
-    <SvgIcon>
-      <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1Zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2Zm0 16H8V7h11v14Z" />
-    </SvgIcon>
-  )
-}
 
 export function HieroglyphOutput({ value }: HieroglyphOutputProps) {
   const outputRef = useRef<HTMLDivElement>(null)
@@ -25,14 +18,6 @@ export function HieroglyphOutput({ value }: HieroglyphOutputProps) {
       output.scrollTop = output.scrollHeight
     }
   }, [value])
-
-  async function copyOutput() {
-    try {
-      await navigator.clipboard.writeText(value)
-    } catch (error) {
-      console.error('Could not copy hieroglyph output', error)
-    }
-  }
 
   return (
     <Box
@@ -81,21 +66,7 @@ export function HieroglyphOutput({ value }: HieroglyphOutputProps) {
           {value}
         </Typography>
       </Box>
-      <IconButton
-        aria-label="Copy hieroglyph output"
-        disabled={!value}
-        onClick={copyOutput}
-        title="Copy output"
-        size="small"
-        sx={{
-          color: 'var(--text-color)',
-          position: 'absolute',
-          right: 8,
-          top: 8,
-        }}
-      >
-        <CopyIcon />
-      </IconButton>
+      <CopyButton value={value} />
     </Box>
   )
 }
