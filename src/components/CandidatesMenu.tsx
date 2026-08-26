@@ -1,6 +1,6 @@
 import { Paper, Popper } from '@mui/material'
 import { CandidateMenuItem } from './CandidateMenuItem'
-import { useRef, useEffect } from 'react'
+import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react'
 import { HieroglyphModel } from '../models/Hieroglyph.type'
 
 export interface CandidatesMenuProps {
@@ -10,7 +10,11 @@ export interface CandidatesMenuProps {
   selectCandidate: (candidate: HieroglyphModel) => void;
 }
 
-export function CandidatesMenu(props: CandidatesMenuProps) {
+export interface CandidatesMenuHandle {
+  scrollByPage: (direction: -1 | 1) => number | null
+}
+
+export const CandidatesMenu = forwardRef<CandidatesMenuHandle, CandidatesMenuProps>(function CandidatesMenu(props, ref) {
   const {
     anchorElement,
     candidates,
@@ -18,7 +22,34 @@ export function CandidatesMenu(props: CandidatesMenuProps) {
     selectCandidate,
   } = props
 
+  const menuRef = useRef<HTMLDivElement | null>(null)
   const selectedRef = useRef<HTMLDivElement | null>(null)
+
+  useImperativeHandle(ref, () => ({
+    scrollByPage(direction) {
+      const menu = menuRef.current
+      if (!menu) return null
+
+      const nextScrollTop = Math.max(
+        0,
+        Math.min(
+          menu.scrollTop + direction * menu.clientHeight * 0.75,
+          menu.scrollHeight - menu.clientHeight,
+        ),
+      )
+
+      menu.scrollTop = nextScrollTop
+
+      const firstVisibleIndex = Array.from(menu.children).findIndex((item) => (
+        item instanceof HTMLElement
+        && item.offsetTop + item.offsetHeight > nextScrollTop
+      ))
+
+      if (firstVisibleIndex < 0) return null
+
+      return Math.min(firstVisibleIndex + 1, menu.children.length - 1)
+    },
+  }), [])
 
   useEffect(() => {
     if(selectedRef.current) {
@@ -39,6 +70,7 @@ export function CandidatesMenu(props: CandidatesMenuProps) {
       }}
     >
       <Paper
+        ref={menuRef}
         role="menu"
         sx={{
           maxHeight: 'min(320px, calc(100dvh - 16px))',
@@ -68,4 +100,4 @@ export function CandidatesMenu(props: CandidatesMenuProps) {
 
   )
 
-}
+})

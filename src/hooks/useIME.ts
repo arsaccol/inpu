@@ -29,7 +29,7 @@ export function useIME() {
   const [candidates, setCandidates] = useState<HieroglyphModel[]>([])
   const [selectedIndex, setSelectedIndex] = useState<number>(0)
 
-  const [selectedInputMode, setSelectedInputMode] = useState<InputMode>(InputMode.PHONOGRAM)
+  const [selectedInputMode, setSelectedInputModeState] = useState<InputMode>(InputMode.PHONOGRAM)
 
   useEffect(() => {
     setSelectedIndex(0)
@@ -52,6 +52,16 @@ export function useIME() {
 
   function clearOutput() {
     setOutputString('')
+  }
+
+  function setSelectedInputMode(inputMode: InputMode) {
+    setSelectedInputModeState(inputMode)
+    setCandidates(inputString ? InputLookupMethodMapping[inputMode](inputString) : [])
+    setSelectedIndex(0)
+  }
+
+  function setSelectedCandidateIndex(index: number) {
+    setSelectedIndex(index)
   }
 
   function selectCandidate(candidate: HieroglyphModel) {
@@ -91,6 +101,7 @@ export function useIME() {
     selectCandidate,
     candidates,
     selectedIndex,
+    setSelectedCandidateIndex,
     handleKeyDown,
     selectedInputMode,
     setSelectedInputMode,
