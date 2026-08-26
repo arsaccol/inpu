@@ -1,8 +1,9 @@
-import { useEffect, useId, useRef, useState } from 'react'
+import { Ref, useEffect, useId, useRef, useState } from 'react'
 import { Box, IconButton, SvgIcon, SvgIconProps } from '@mui/material'
 import { OutputFeedback } from './OutputFeedback'
 
 export interface ClearButtonProps {
+  buttonRef?: Ref<HTMLButtonElement>
   disabled: boolean
   onClear: () => void
 }
@@ -17,7 +18,7 @@ function DeleteIcon(props: SvgIconProps) {
   )
 }
 
-export function ClearButton({ disabled, onClear }: ClearButtonProps) {
+export function ClearButton({ buttonRef, disabled, onClear }: ClearButtonProps) {
   const [cleared, setCleared] = useState(false)
   const feedbackId = useId()
   const feedbackTimer = useRef<number | null>(null)
@@ -45,13 +46,14 @@ export function ClearButton({ disabled, onClear }: ClearButtonProps) {
   return (
     <Box sx={{ display: 'flex', height: 34, position: 'relative' }}>
       <IconButton
+        ref={buttonRef}
         aria-describedby={cleared ? feedbackId : undefined}
         aria-label="Clear hieroglyph output"
         disabled={disabled}
         disableRipple
         onClick={clearOutput}
         size="small"
-        title="Clear output"
+        title="Clear output (Shift+Delete)"
         sx={(theme) => ({
           backgroundColor: cleared ? 'action.selected' : 'transparent',
           color: 'text.primary',
