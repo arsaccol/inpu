@@ -1,0 +1,3 @@
+[submodule "inpu-db"]
+	path = inpu-db
+	url = https://github.com/arsaccol/inpu-db.git

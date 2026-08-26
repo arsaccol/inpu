@@ -15,3 +15,4 @@
 - Describe the purpose and meaningful effect of a change in language that non-technical readers can follow, especially when it affects users or deployment behavior.
 - Retain technical vocabulary and implementation detail when they are necessary for accuracy; clarity does not require removing useful technical context.
 - Avoid opaque shorthand or purely internal phrasing when a concise explanation of the change would make the resulting release notes more informative.
+- Preserve Git's conventional merge commit subjects, such as `Merge branch 'main' into dev`. They communicate branch history and synchronization clearly to developers and should not be rewritten merely to make automated release notes friendlier.
