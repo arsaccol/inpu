@@ -1,8 +1,9 @@
-import { useEffect, useId, useRef, useState } from 'react'
+import { Ref, useEffect, useId, useRef, useState } from 'react'
 import { Box, IconButton, SvgIcon } from '@mui/material'
 import { OutputFeedback } from './OutputFeedback'
 
 export interface CopyButtonProps {
+  buttonRef?: Ref<HTMLButtonElement>
   value: string
 }
 
@@ -24,7 +25,7 @@ function CheckIcon() {
   )
 }
 
-export function CopyButton({ value }: CopyButtonProps) {
+export function CopyButton({ buttonRef, value }: CopyButtonProps) {
   const [copied, setCopied] = useState(false)
   const feedbackId = useId()
   const feedbackTimer = useRef<number | null>(null)
@@ -62,12 +63,13 @@ export function CopyButton({ value }: CopyButtonProps) {
       }}
     >
       <IconButton
+        ref={buttonRef}
         aria-describedby={copied ? feedbackId : undefined}
         aria-label="Copy hieroglyph output"
         disabled={!value}
         disableRipple
         onClick={copyOutput}
-        title="Copy output"
+        title="Copy output (Ctrl+C)"
         size="small"
         sx={(theme) => ({
           backgroundColor: copied ? 'success.main' : 'transparent',

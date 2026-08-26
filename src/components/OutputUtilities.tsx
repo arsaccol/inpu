@@ -1,4 +1,5 @@
 import { Box } from '@mui/material'
+import { useEffect, useRef } from 'react'
 import { ClearButton } from './ClearButton'
 import { CopyButton } from './CopyButton'
 
@@ -8,6 +9,28 @@ export interface OutputUtilitiesProps {
 }
 
 export function OutputUtilities({ onClear, value }: OutputUtilitiesProps) {
+  const copyButtonRef = useRef<HTMLButtonElement>(null)
+  const clearButtonRef = useRef<HTMLButtonElement>(null)
+
+  useEffect(() => {
+    function handleOutputShortcut(e: KeyboardEvent) {
+      if (e.ctrlKey && e.key.toLowerCase() === 'c') {
+        e.preventDefault()
+        copyButtonRef.current?.click()
+        return
+      }
+
+      if (e.shiftKey && e.key === 'Delete') {
+        e.preventDefault()
+        clearButtonRef.current?.click()
+      }
+    }
+
+    document.addEventListener('keydown', handleOutputShortcut)
+
+    return () => document.removeEventListener('keydown', handleOutputShortcut)
+  }, [])
+
   return (
     <Box
       sx={{
@@ -27,8 +50,8 @@ export function OutputUtilities({ onClear, value }: OutputUtilitiesProps) {
         top: 8,
       }}
     >
-      <CopyButton value={value} />
-      <ClearButton disabled={!value} onClear={onClear} />
+      <CopyButton buttonRef={copyButtonRef} value={value} />
+      <ClearButton buttonRef={clearButtonRef} disabled={!value} onClear={onClear} />
     </Box>
   )
 }
