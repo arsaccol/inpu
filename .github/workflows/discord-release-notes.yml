@@ -78,7 +78,7 @@ jobs:
 
           jq -n \
             --arg content "$CONTENT" \
-            '{content: $content, allowed_mentions: {parse: []}}' \
+            '{content: $content, allowed_mentions: {parse: []}, flags: 4}' \
             | curl \
                 --fail-with-body \
                 -H "Content-Type: application/json" \
