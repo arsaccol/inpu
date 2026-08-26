@@ -1,11 +1,16 @@
-import { useState, useEffect } from 'react'
-import { useIME } from '../hooks/useIME'
+import { useState, useEffect, useRef } from 'react'
+import { InputMode, useIME } from '../hooks/useIME'
 import { TextField } from '@mui/material'
 import { Box } from '@mui/material'
 import { CandidatesMenu } from './CandidatesMenu'
 import { InputModeSelect } from './InputModeSelect'
 import { HieroglyphOutput } from './HieroglyphOutput'
 
+const inputModePlaceholders: Record<InputMode, string> = {
+  [InputMode.PHONOGRAM]: 'Try “anx”',
+  [InputMode.GARDINER]: 'Try “Y3”',
+  [InputMode.KEYWORDS]: 'Try “man”',
+}
 
 
 export function MaterialIME() {
@@ -23,6 +28,7 @@ export function MaterialIME() {
 
   const [isFocused, setIsFocused] = useState(false)
   const [isMenuVisible, setIsMenuVisible] = useState(false)
+  const inputAreaRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     setIsMenuVisible(isFocused && candidates.length > 0)
@@ -51,7 +57,7 @@ export function MaterialIME() {
       width: { xs: '100%', sm: '445px' },
     }}>
       <HieroglyphOutput value={outputString} />
-      <Box sx={{
+      <Box ref={inputAreaRef} sx={{
         display: "flex", 
         flexDirection: {xs: "column", sm: "row"}, 
         alignItems: {xs: "flex-start", sm:"center" }, 
@@ -63,7 +69,7 @@ export function MaterialIME() {
           setSelectedInputMode={setSelectedInputMode}
         />
         <TextField
-          label=""
+          placeholder={inputModePlaceholders[selectedInputMode]}
           variant="outlined"
           value={inputString}
           onChange={onChange}
@@ -80,12 +86,20 @@ export function MaterialIME() {
               backgroundColor: 'var(--background-color-brighter)',
               color: 'var(--text-color)',
               borderColor: 'var(--border-color)',
+              '& .MuiInputBase-input::placeholder': {
+                color: 'text.secondary',
+                opacity: 1,
+              },
             }
+          }}
+          inputProps={{
+            'aria-label': `${selectedInputMode} input`,
           }}
         />
       </Box>
       {isMenuVisible && candidates!.length > 0 && (
         <CandidatesMenu 
+          anchorElement={inputAreaRef.current}
           candidates={candidates} 
           selectedIndex={selectedIndex}
           selectCandidate={selectCandidate}

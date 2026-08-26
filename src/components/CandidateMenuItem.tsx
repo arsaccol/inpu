@@ -1,8 +1,8 @@
 import { MenuItem } from "@mui/material"
 import { HieroglyphModel } from "../models/Hieroglyph.type"
-import { Stack } from "@mui/material"
 import { Typography }  from "@mui/material"
 import { RefObject } from 'react'
+import { GardinerCodeBadge } from './GardinerCodeBadge'
 
 type CandidateMenuItemProps = {
   candidate: HieroglyphModel,
@@ -18,7 +18,15 @@ export function CandidateMenuItem(props: CandidateMenuItemProps) {
     <MenuItem
       onClick={props.onClick}
       sx={{
+        alignItems: 'center',
+        columnGap: { xs: 1, sm: 1.5 },
         cursor: 'pointer',
+        display: 'grid',
+        gridTemplateColumns: {
+          xs: '56px 36px 54px minmax(0, 1fr)',
+          sm: '68px 42px 62px minmax(0, 1fr)',
+        },
+        py: { xs: 1, sm: 1.25 },
         backgroundColor: props.isSelected
         ? 'var(--selected-bg-color)'
         : 'inherit',
@@ -27,29 +35,22 @@ export function CandidateMenuItem(props: CandidateMenuItemProps) {
         }
       }}
     >
-    <Stack direction='row' spacing={3}>
-      <div>
-        <Typography variant="h3" sx={{ fontWeight: 'bold'}}>
-          {props.candidate.glyph}
-        </Typography>
-      </div>
-      <div>
-        <Typography>
-          {props.candidate.transliteration}
-        </Typography>
-      </div>
-      <div>
-        <Typography>
-          [{props.candidate.gardiner_code}]
-        </Typography>
-      </div>
-      <div>
-        <Typography>
-          ({props.candidate.name})
-        </Typography>
-      </div>
-    
-    </Stack>
+      <Typography
+        variant="h3"
+        sx={{
+          fontWeight: 'bold',
+          lineHeight: 1.15,
+        }}
+      >
+        {props.candidate.glyph}
+      </Typography>
+      <Typography sx={{ whiteSpace: 'nowrap' }}>
+        {props.candidate.transliteration}
+      </Typography>
+      <GardinerCodeBadge code={props.candidate.gardiner_code} />
+      <Typography sx={{ minWidth: 0, overflowWrap: 'anywhere', whiteSpace: 'normal' }}>
+        {props.candidate.name}
+      </Typography>
     </MenuItem>
     </div>
   )
