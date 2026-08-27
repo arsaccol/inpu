@@ -1,6 +1,7 @@
 import { Ref, useEffect, useId, useRef, useState } from 'react'
 import { Box, IconButton, SvgIcon } from '@mui/material'
 import { OutputFeedback } from './OutputFeedback'
+import { isMacOS } from '../platform'
 
 export interface CopyButtonProps {
   buttonRef?: Ref<HTMLButtonElement>
@@ -29,6 +30,7 @@ export function CopyButton({ buttonRef, value }: CopyButtonProps) {
   const [copied, setCopied] = useState(false)
   const feedbackId = useId()
   const feedbackTimer = useRef<number | null>(null)
+  const copyShortcut = isMacOS() ? '⌘C' : 'Ctrl+C'
 
   useEffect(() => () => {
     if (feedbackTimer.current !== null) {
@@ -69,7 +71,7 @@ export function CopyButton({ buttonRef, value }: CopyButtonProps) {
         disabled={!value}
         disableRipple
         onClick={copyOutput}
-        title="Copy output (Ctrl+C)"
+        title={`Copy output (${copyShortcut})`}
         size="small"
         sx={(theme) => ({
           backgroundColor: copied ? 'success.main' : 'transparent',
