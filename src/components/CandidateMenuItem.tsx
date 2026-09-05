@@ -44,7 +44,9 @@ export function CandidateMenuItem(props: CandidateMenuItemProps) {
           display: 'flex',
           fontVariantNumeric: 'tabular-nums',
           justifyContent: 'center',
+          position: 'relative',
           typography: 'caption',
+          zIndex: 2,
         }}
       >
         {props.shortcutLabel}

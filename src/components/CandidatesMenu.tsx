@@ -1,6 +1,6 @@
 import { Paper, Popper } from '@mui/material'
 import { CandidateMenuItem } from './CandidateMenuItem'
-import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
+import { forwardRef, useEffect, useImperativeHandle, useLayoutEffect, useRef, useState } from 'react'
 import { HieroglyphModel } from '../models/Hieroglyph.type'
 
 export interface CandidatesMenuProps {
@@ -37,6 +37,10 @@ function getVisibleCandidateIndexes(menu: HTMLDivElement) {
   }, [])
 }
 
+function getInitialShortcutIndexes(candidates: HieroglyphModel[]) {
+  return candidates.slice(0, 10).map((_candidate, index) => index)
+}
+
 export const CandidatesMenu = forwardRef<CandidatesMenuHandle, CandidatesMenuProps>(function CandidatesMenu(props, ref) {
   const {
     anchorElement,
@@ -49,16 +53,22 @@ export const CandidatesMenu = forwardRef<CandidatesMenuHandle, CandidatesMenuPro
   const menuRef = useRef<HTMLDivElement | null>(null)
   const selectedRef = useRef<HTMLDivElement | null>(null)
   const isPagingRef = useRef(false)
-  const [firstVisibleIndex, setFirstVisibleIndex] = useState(0)
+  const [visibleCandidateIndexes, setVisibleCandidateIndexes] = useState<number[]>(() => (
+    getInitialShortcutIndexes(candidates)
+  ))
 
   function updateVisibleCandidateLabels() {
     const menu = menuRef.current
     if (!menu) return
 
-    const nextFirstVisibleIndex = getVisibleCandidateIndexes(menu)[0]
-    if (nextFirstVisibleIndex !== undefined) {
-      setFirstVisibleIndex(nextFirstVisibleIndex)
-    }
+    const nextVisibleCandidateIndexes = getVisibleCandidateIndexes(menu)
+
+    setVisibleCandidateIndexes((currentVisibleCandidateIndexes) => (
+      currentVisibleCandidateIndexes.length === nextVisibleCandidateIndexes.length
+      && currentVisibleCandidateIndexes.every((index, position) => index === nextVisibleCandidateIndexes[position])
+        ? currentVisibleCandidateIndexes
+        : nextVisibleCandidateIndexes
+    ))
   }
 
   useImperativeHandle(ref, () => ({
@@ -102,6 +112,10 @@ export const CandidatesMenu = forwardRef<CandidatesMenuHandle, CandidatesMenuPro
     }
   }, [selectedIndex])
 
+  useLayoutEffect(() => {
+    setVisibleCandidateIndexes(getInitialShortcutIndexes(candidates))
+  }, [candidates])
+
   return (
     <Popper
       open={Boolean(anchorElement)}
@@ -139,7 +153,9 @@ export const CandidatesMenu = forwardRef<CandidatesMenuHandle, CandidatesMenuPro
       >
       {candidates.map( (candidate, index) => {
           const isSelected = index === selectedIndex
-          const shortcutIndex = index - firstVisibleIndex
+          const shortcutIndex = visibleCandidateIndexes.length > 0
+            ? visibleCandidateIndexes.indexOf(index)
+            : index
           const shortcutLabel = showShortcuts && shortcutIndex >= 0 && shortcutIndex < 10
             ? shortcutIndex === 9 ? '0' : String(shortcutIndex + 1)
             : ''
