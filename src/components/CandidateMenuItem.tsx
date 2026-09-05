@@ -1,21 +1,21 @@
 import { MenuItem } from "@mui/material"
 import { HieroglyphModel } from "../models/Hieroglyph.type"
 import { Typography }  from "@mui/material"
-import { RefObject } from 'react'
+import { Ref } from 'react'
 import { GardinerCodeBadge } from './GardinerCodeBadge'
 
 type CandidateMenuItemProps = {
   candidate: HieroglyphModel,
   onClick: () => void;
   isSelected?: boolean;
-  selectedRef?: RefObject<HTMLDivElement | null> | null;
+  itemRef?: Ref<HTMLDivElement>;
   shortcutLabel: string;
 }
 
 
 export function CandidateMenuItem(props: CandidateMenuItemProps) {
   return (
-    <div ref={props.selectedRef}>
+    <div ref={props.itemRef}>
     <MenuItem
       onClick={props.onClick}
       sx={{
@@ -44,7 +44,9 @@ export function CandidateMenuItem(props: CandidateMenuItemProps) {
           display: 'flex',
           fontVariantNumeric: 'tabular-nums',
           justifyContent: 'center',
+          position: 'relative',
           typography: 'caption',
+          zIndex: 2,
         }}
       >
         {props.shortcutLabel}
