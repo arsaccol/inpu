@@ -2,6 +2,7 @@ import { Box } from '@mui/material'
 import { useEffect, useRef } from 'react'
 import { ClearButton } from './ClearButton'
 import { CopyButton } from './CopyButton'
+import { isMacOS } from '../platform'
 
 export interface OutputUtilitiesProps {
   onClear: () => void
@@ -14,7 +15,9 @@ export function OutputUtilities({ onClear, value }: OutputUtilitiesProps) {
 
   useEffect(() => {
     function handleOutputShortcut(e: KeyboardEvent) {
-      if (e.ctrlKey && e.key.toLowerCase() === 'c') {
+      const copyModifierPressed = isMacOS() ? e.metaKey : e.ctrlKey
+
+      if (copyModifierPressed && e.key.toLowerCase() === 'c') {
         e.preventDefault()
         copyButtonRef.current?.click()
         return
