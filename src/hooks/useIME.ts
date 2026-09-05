@@ -25,9 +25,10 @@ export function useIME() {
   }
 
   const [inputString, setInputString] = useState<string>('')
-  const [outputString, setOutputString] = useState<string>('')
+  const [outputHieroglyphs, setOutputHieroglyphs] = useState<HieroglyphModel[]>([])
   const [candidates, setCandidates] = useState<HieroglyphModel[]>([])
   const [selectedIndex, setSelectedIndex] = useState<number>(0)
+  const outputString = outputHieroglyphs.map(({ glyph }) => glyph).join('')
 
   const [selectedInputMode, setSelectedInputModeState] = useState<InputMode>(InputMode.PHONOGRAM)
 
@@ -39,7 +40,7 @@ export function useIME() {
   function onChange(e: ChangeEvent<HTMLInputElement>) {
     const value = e.target.value.replace(/ /g, '')
     const inputLookupMethod = InputLookupMethodMapping[selectedInputMode]
-    const candidateObjects = inputLookupMethod(e.target.value)
+    const candidateObjects = inputLookupMethod(value)
 
     setCandidates(candidateObjects)
     setInputString(value)
@@ -51,7 +52,7 @@ export function useIME() {
   }
 
   function clearOutput() {
-    setOutputString('')
+    setOutputHieroglyphs([])
   }
 
   function setSelectedInputMode(inputMode: InputMode) {
@@ -65,7 +66,7 @@ export function useIME() {
   }
 
   function selectCandidate(candidate: HieroglyphModel) {
-    setOutputString(outputString + candidate.glyph)
+    setOutputHieroglyphs((currentOutput) => [...currentOutput, candidate])
     clearInput()
     setSelectedIndex(0)
   }
@@ -96,6 +97,7 @@ export function useIME() {
     onChange,
     inputString,
     outputString,
+    outputHieroglyphs,
     clearInput,
     clearOutput,
     selectCandidate,

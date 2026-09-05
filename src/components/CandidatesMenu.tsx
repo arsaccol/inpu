@@ -102,7 +102,6 @@ export const CandidatesMenu = forwardRef<CandidatesMenuHandle, CandidatesMenuPro
     }
   }, [selectedIndex])
 
-
   return (
     <Popper
       open={Boolean(anchorElement)}
