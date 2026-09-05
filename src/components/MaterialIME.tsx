@@ -17,6 +17,7 @@ const inputModes = Object.values(InputMode)
 export function MaterialIME() {
   const {
     inputString,
+    outputHieroglyphs,
     outputString,
     onChange,
     clearOutput,
@@ -121,7 +122,7 @@ export function MaterialIME() {
       textAlign: 'left',
       width: { xs: '100%', sm: '520px' },
     }}>
-      <HieroglyphOutput value={outputString} onClear={clearOutput} />
+      <HieroglyphOutput glyphs={outputHieroglyphs} value={outputString} onClear={clearOutput} />
       <Box ref={inputAreaRef} sx={{
         display: "flex", 
         flexDirection: {xs: "column", sm: "row"}, 
