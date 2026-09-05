@@ -74,8 +74,10 @@ export function useDatabase() {
   }
 
   function lookupInputDescriptionCandidates(input: string): HieroglyphModel[] {
+    const keywordCandidateLimit = 20
+
     if(input.trim() === '') return []
-    const query = `select * from hieroglyphs where description_words like '%${input}%'`
+    const query = `select * from hieroglyphs where description_words like '%${input}%' limit ${keywordCandidateLimit}`
     const result: HieroglyphModel[] = databaseLookup(query)
     return result
   }

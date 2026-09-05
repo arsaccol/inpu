@@ -1,4 +1,4 @@
-import { Paper, Popper } from '@mui/material'
+import { Box, Paper, Popper } from '@mui/material'
 import { CandidateMenuItem } from './CandidateMenuItem'
 import { forwardRef, useEffect, useImperativeHandle, useLayoutEffect, useRef, useState } from 'react'
 import { HieroglyphModel } from '../models/Hieroglyph.type'
@@ -16,29 +16,30 @@ export interface CandidatesMenuHandle {
   scrollByPage: (direction: -1 | 1) => number | null
 }
 
-function getFirstVisibleCandidateIndex(menu: HTMLDivElement, scrollTop: number) {
-  return Array.from(menu.children).findIndex((item) => (
-    item instanceof HTMLElement
-    && item.offsetTop + item.offsetHeight > scrollTop
-  ))
+const estimatedCandidateHeight = 76
+const candidateOverscan = 3
+
+type CandidateRow = {
+  height: number
+  index: number
+  top: number
 }
 
-function getVisibleCandidateIndexes(menu: HTMLDivElement) {
-  return Array.from(menu.children).reduce<number[]>((indexes, item, index) => {
-    if (
-      item instanceof HTMLElement
-      && item.offsetTop + item.offsetHeight > menu.scrollTop
-      && item.offsetTop < menu.scrollTop + menu.clientHeight
-    ) {
-      indexes.push(index)
-    }
+function getCandidateRows(candidates: HieroglyphModel[], rowHeights: Map<number, number>) {
+  let top = 0
 
-    return indexes
-  }, [])
+  return candidates.map((_candidate, index) => {
+    const height = rowHeights.get(index) ?? estimatedCandidateHeight
+    const row = { height, index, top }
+    top += height
+    return row
+  })
 }
 
-function getInitialShortcutIndexes(candidates: HieroglyphModel[]) {
-  return candidates.slice(0, 10).map((_candidate, index) => index)
+function getVisibleCandidateIndexes(rows: CandidateRow[], scrollTop: number, viewportHeight: number) {
+  return rows
+    .filter((row) => row.top + row.height > scrollTop && row.top < scrollTop + viewportHeight)
+    .map((row) => row.index)
 }
 
 export const CandidatesMenu = forwardRef<CandidatesMenuHandle, CandidatesMenuProps>(function CandidatesMenu(props, ref) {
@@ -52,31 +53,82 @@ export const CandidatesMenu = forwardRef<CandidatesMenuHandle, CandidatesMenuPro
 
   const menuRef = useRef<HTMLDivElement | null>(null)
   const selectedRef = useRef<HTMLDivElement | null>(null)
-  const isPagingRef = useRef(false)
-  const [visibleCandidateIndexes, setVisibleCandidateIndexes] = useState<number[]>(() => (
-    getInitialShortcutIndexes(candidates)
-  ))
+  const rowElements = useRef(new Map<number, HTMLDivElement>())
+  const rowIndexes = useRef(new Map<HTMLDivElement, number>())
+  const rowObserver = useRef<ResizeObserver | null>(null)
+  const [rowHeights, setRowHeights] = useState(new Map<number, number>())
+  const [scrollTop, setScrollTop] = useState(0)
+  const [viewportHeight, setViewportHeight] = useState(320)
+  const candidateRows = getCandidateRows(candidates, rowHeights)
+  const visibleCandidateIndexes = getVisibleCandidateIndexes(candidateRows, scrollTop, viewportHeight)
+  const firstVisibleIndex = visibleCandidateIndexes[0] ?? 0
+  const lastVisibleIndex = visibleCandidateIndexes.at(-1) ?? 0
+  const renderStartIndex = Math.max(0, Math.min(firstVisibleIndex - candidateOverscan, selectedIndex))
+  const renderEndIndex = Math.min(
+    candidates.length - 1,
+    Math.max(lastVisibleIndex + candidateOverscan, selectedIndex),
+  )
+  const lastCandidateRow = candidateRows.at(-1)
+  const totalHeight = lastCandidateRow ? lastCandidateRow.top + lastCandidateRow.height : 0
 
-  function updateVisibleCandidateLabels() {
-    const menu = menuRef.current
-    if (!menu) return
+  function registerCandidateItem(index: number, element: HTMLDivElement | null) {
+    const previousElement = rowElements.current.get(index)
 
-    const nextVisibleCandidateIndexes = getVisibleCandidateIndexes(menu)
+    if (previousElement === element) return
 
-    setVisibleCandidateIndexes((currentVisibleCandidateIndexes) => (
-      currentVisibleCandidateIndexes.length === nextVisibleCandidateIndexes.length
-      && currentVisibleCandidateIndexes.every((index, position) => index === nextVisibleCandidateIndexes[position])
-        ? currentVisibleCandidateIndexes
-        : nextVisibleCandidateIndexes
-    ))
+    if (previousElement) {
+      rowObserver.current?.unobserve(previousElement)
+      rowIndexes.current.delete(previousElement)
+    }
+
+    if (!element) {
+      rowElements.current.delete(index)
+      return
+    }
+
+    rowElements.current.set(index, element)
+    rowIndexes.current.set(element, index)
+    rowObserver.current?.observe(element)
+
+    if (index === selectedIndex) {
+      selectedRef.current = element
+    }
   }
+
+  function updateViewport(menu: HTMLDivElement) {
+    setScrollTop(menu.scrollTop)
+    setViewportHeight(menu.clientHeight)
+  }
+
+  useEffect(() => {
+    const observer = new ResizeObserver((entries) => {
+      setRowHeights((currentRowHeights) => {
+        let hasChanged = false
+        const nextRowHeights = new Map(currentRowHeights)
+
+        for (const entry of entries) {
+          const index = rowIndexes.current.get(entry.target as HTMLDivElement)
+          const height = Math.ceil(entry.contentRect.height)
+
+          if (index !== undefined && nextRowHeights.get(index) !== height) {
+            nextRowHeights.set(index, height)
+            hasChanged = true
+          }
+        }
+
+        return hasChanged ? nextRowHeights : currentRowHeights
+      })
+    })
+
+    rowObserver.current = observer
+    rowElements.current.forEach((element) => observer.observe(element))
+
+    return () => observer.disconnect()
+  }, [])
 
   useImperativeHandle(ref, () => ({
     getVisibleCandidateIndex(shortcutIndex) {
-      const menu = menuRef.current
-      if (!menu) return null
-
-      return getVisibleCandidateIndexes(menu)[shortcutIndex] ?? null
+      return visibleCandidateIndexes[shortcutIndex] ?? null
     },
     scrollByPage(direction) {
       const menu = menuRef.current
@@ -90,30 +142,30 @@ export const CandidatesMenu = forwardRef<CandidatesMenuHandle, CandidatesMenuPro
         ),
       )
 
-      isPagingRef.current = true
       menu.scrollTo({ behavior: 'smooth', top: nextScrollTop })
+      const nextVisibleCandidateIndexes = getVisibleCandidateIndexes(
+        candidateRows,
+        nextScrollTop,
+        menu.clientHeight,
+      )
+      const nextFirstVisibleIndex = nextVisibleCandidateIndexes[0]
 
-      const firstVisibleIndex = getFirstVisibleCandidateIndex(menu, nextScrollTop)
-
-      if (firstVisibleIndex < 0) return null
-
-      return Math.min(firstVisibleIndex + 1, menu.children.length - 1)
+      return nextFirstVisibleIndex === undefined
+        ? null
+        : Math.min(nextFirstVisibleIndex + 1, candidates.length - 1)
     },
-  }), [])
+  }), [candidateRows, candidates.length, visibleCandidateIndexes])
 
   useEffect(() => {
-    if (isPagingRef.current) {
-      isPagingRef.current = false
-      return
-    }
-
     if(selectedRef.current) {
       selectedRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
     }
   }, [selectedIndex])
 
   useLayoutEffect(() => {
-    setVisibleCandidateIndexes(getInitialShortcutIndexes(candidates))
+    setRowHeights(new Map())
+    setScrollTop(0)
+    menuRef.current?.scrollTo({ top: 0 })
   }, [candidates])
 
   return (
@@ -141,7 +193,7 @@ export const CandidatesMenu = forwardRef<CandidatesMenuHandle, CandidatesMenuPro
       <Paper
         ref={menuRef}
         role="menu"
-        onScroll={updateVisibleCandidateLabels}
+        onScroll={(e) => updateViewport(e.currentTarget)}
         sx={{
           maxHeight: 'min(320px, calc(100dvh - 16px))',
           overflowY: 'auto',
@@ -151,27 +203,32 @@ export const CandidatesMenu = forwardRef<CandidatesMenuHandle, CandidatesMenuPro
         }}
         elevation={3}
       >
-      {candidates.map( (candidate, index) => {
+      <Box sx={{ height: totalHeight, position: 'relative' }}>
+      {candidateRows.slice(renderStartIndex, renderEndIndex + 1).map((row) => {
+          const candidate = candidates[row.index]
+          const index = row.index
           const isSelected = index === selectedIndex
-          const shortcutIndex = visibleCandidateIndexes.length > 0
-            ? visibleCandidateIndexes.indexOf(index)
-            : index
+          const shortcutIndex = visibleCandidateIndexes.indexOf(index)
           const shortcutLabel = showShortcuts && shortcutIndex >= 0 && shortcutIndex < 10
             ? shortcutIndex === 9 ? '0' : String(shortcutIndex + 1)
             : ''
           return (
-            <CandidateMenuItem
+            <Box
               key={candidate.id}
-              isSelected={isSelected}
-              onClick={() => { console.log('onClick candidate', candidate); selectCandidate!(candidate) }}
-            candidate={candidate}
-            selectedRef={isSelected? selectedRef : null}
-            shortcutLabel={shortcutLabel}
+              sx={{ left: 0, position: 'absolute', right: 0, top: row.top }}
             >
-            </CandidateMenuItem>
+              <CandidateMenuItem
+                itemRef={(element) => registerCandidateItem(index, element)}
+                isSelected={isSelected}
+                onClick={() => { console.log('onClick candidate', candidate); selectCandidate!(candidate) }}
+                candidate={candidate}
+                shortcutLabel={shortcutLabel}
+              />
+            </Box>
           )
         }
       )}
+      </Box>
       </Paper>
     </Popper>
 
