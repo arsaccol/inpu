@@ -41,6 +41,7 @@ jobs:
             "repos/${{ github.repository }}/pulls/${PR_NUMBER}/commits" \
             --paginate \
             --jq '.[] |
+              select((.parents | length) == 1) |
               (.author.login // .commit.author.name // "unknown contributor") as $author |
               (.commit.message | split("\n")[0]) as $message |
               "• \($message) — by \($author)"' \
