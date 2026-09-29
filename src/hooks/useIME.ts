@@ -6,6 +6,7 @@ export enum InputMode {
   PHONOGRAM = "Phonogram",
   GARDINER = "Gardiner Code",
   KEYWORDS = "Keywords",
+  MDC = "Manuel de Codage",
 }
 
 
@@ -38,6 +39,7 @@ export function useIME() {
 
 
   function onChange(e: ChangeEvent<HTMLInputElement>) {
+    if (selectedInputMode === InputMode.MDC) return
     const value = e.target.value.replace(/ /g, '')
     const inputLookupMethod = InputLookupMethodMapping[selectedInputMode]
     const candidateObjects = inputLookupMethod(value)
@@ -57,7 +59,7 @@ export function useIME() {
 
   function setSelectedInputMode(inputMode: InputMode) {
     setSelectedInputModeState(inputMode)
-    setCandidates(inputString ? InputLookupMethodMapping[inputMode](inputString) : [])
+    setCandidates(inputMode !== InputMode.MDC && inputString ? InputLookupMethodMapping[inputMode](inputString) : [])
     setSelectedIndex(0)
   }
 
