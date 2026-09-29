@@ -7,9 +7,11 @@ import { isMacOS } from '../platform'
 export interface OutputUtilitiesProps {
   onClear: () => void
   value: string
+  canClear?: boolean
+  preserveTextSelection?: boolean
 }
 
-export function OutputUtilities({ onClear, value }: OutputUtilitiesProps) {
+export function OutputUtilities({ onClear, value, canClear, preserveTextSelection = false }: OutputUtilitiesProps) {
   const copyButtonRef = useRef<HTMLButtonElement>(null)
   const clearButtonRef = useRef<HTMLButtonElement>(null)
 
@@ -18,6 +20,13 @@ export function OutputUtilities({ onClear, value }: OutputUtilitiesProps) {
       const copyModifierPressed = isMacOS() ? e.metaKey : e.ctrlKey
 
       if (copyModifierPressed && e.key.toLowerCase() === 'c') {
+        if (preserveTextSelection) {
+          const target = e.target
+          const inputSelection = (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement)
+            && target.selectionStart !== target.selectionEnd
+          const selection = window.getSelection()
+          if (inputSelection || (selection && !selection.isCollapsed) || e.defaultPrevented) return
+        }
         e.preventDefault()
         copyButtonRef.current?.click()
         return
@@ -32,7 +41,7 @@ export function OutputUtilities({ onClear, value }: OutputUtilitiesProps) {
     document.addEventListener('keydown', handleOutputShortcut)
 
     return () => document.removeEventListener('keydown', handleOutputShortcut)
-  }, [])
+  }, [preserveTextSelection])
 
   return (
     <Box
@@ -54,7 +63,7 @@ export function OutputUtilities({ onClear, value }: OutputUtilitiesProps) {
       }}
     >
       <CopyButton buttonRef={copyButtonRef} value={value} />
-      <ClearButton buttonRef={clearButtonRef} disabled={!value} onClear={onClear} />
+      <ClearButton buttonRef={clearButtonRef} disabled={!(canClear ?? !!value)} onClear={onClear} />
     </Box>
   )
 }

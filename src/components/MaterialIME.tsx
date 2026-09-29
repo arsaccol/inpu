@@ -1,15 +1,19 @@
-import { useState, useEffect, useRef } from 'react'
+import { lazy, Suspense, useState, useEffect, useRef } from 'react'
 import { InputMode, useIME } from '../hooks/useIME'
 import { TextField } from '@mui/material'
 import { Box } from '@mui/material'
 import { CandidatesMenu, CandidatesMenuHandle } from './CandidatesMenu'
 import { InputModeSelect } from './InputModeSelect'
 import { HieroglyphOutput } from './HieroglyphOutput'
+import type { MdcDraft } from '../mdc/mdcState'
+
+const MdcEditor = lazy(() => import('../mdc/MdcEditor'))
 
 const inputModePlaceholders: Record<InputMode, string> = {
   [InputMode.PHONOGRAM]: 'Try “anx”',
   [InputMode.GARDINER]: 'Try “Y3”',
   [InputMode.KEYWORDS]: 'Try “man”',
+  [InputMode.MDC]: 'Try “A1:O1”',
 }
 
 const inputModes = Object.values(InputMode)
@@ -30,10 +34,16 @@ export function MaterialIME() {
     setSelectedInputMode,
   } = useIME()
 
+  // Lift only the draft so switching modes preserves it without mounting the renderer.
+  const [mdcDraft, setMdcDraft] = useState<MdcDraft>({
+    source: '', unicode: '', warnings: [], status: 'empty',
+  })
+  const isMdc = selectedInputMode === InputMode.MDC
+
   const [isFocused, setIsFocused] = useState(false)
   const [isMenuVisible, setIsMenuVisible] = useState(false)
   const inputAreaRef = useRef<HTMLDivElement>(null)
-  const textInputRef = useRef<HTMLInputElement>(null)
+  const textInputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null)
   const candidatesMenuRef = useRef<CandidatesMenuHandle>(null)
 
   useEffect(() => {
@@ -71,6 +81,7 @@ export function MaterialIME() {
   }
 
   function handleInputKeyDown(e: React.KeyboardEvent) {
+    if (isMdc) return
     if (e.key === ' ') {
       e.preventDefault()
 
@@ -113,6 +124,10 @@ export function MaterialIME() {
   }
 
 
+  const modeSelector = (
+    <InputModeSelect selectedInputMode={selectedInputMode} setSelectedInputMode={setSelectedInputMode} />
+  )
+
   return (
     <Box sx={{
       display: 'block',
@@ -122,60 +137,65 @@ export function MaterialIME() {
       textAlign: 'left',
       width: { xs: '100%', sm: '520px' },
     }}>
-      <HieroglyphOutput glyphs={outputHieroglyphs} value={outputString} onClear={clearOutput} />
-      <Box ref={inputAreaRef} sx={{
-        display: "flex", 
-        flexDirection: {xs: "column", sm: "row"}, 
-        alignItems: {xs: "flex-start", sm:"center" }, 
-        gap: "20px",
-        width: '100%',
-      }}>
-        <InputModeSelect 
-          selectedInputMode={selectedInputMode} 
-          setSelectedInputMode={setSelectedInputMode}
-        />
-        <TextField
-          autoFocus
-          inputRef={textInputRef}
-          placeholder={inputModePlaceholders[selectedInputMode]}
-          variant="outlined"
-          value={inputString}
-          onChange={onChange}
-          onKeyDown={handleInputKeyDown}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-          sx={{
-            flex: { xs: '0 0 auto', sm: '0 0 250px' },
-            maxWidth: '100%',
-            width: '250px',
-          }}
-          InputProps={{
-            sx: {
-              backgroundColor: 'var(--background-color-brighter)',
-              color: 'var(--text-color)',
-              borderColor: 'var(--border-color)',
-              '& .MuiInputBase-input::placeholder': {
-                color: 'text.secondary',
-                opacity: 1,
-              },
-            }
-          }}
-          inputProps={{
-            'aria-label': `${selectedInputMode} input`,
-          }}
-        />
-      </Box>
-      {isMenuVisible && candidates!.length > 0 && (
-        <CandidatesMenu 
-          ref={candidatesMenuRef}
-          anchorElement={inputAreaRef.current}
-          candidates={candidates} 
-          selectedIndex={selectedIndex}
-          selectCandidate={selectCandidate}
-          showShortcuts={selectedInputMode !== InputMode.GARDINER}
-        />
-    )}
-  </Box>
+      {isMdc ? (
+        <Suspense fallback={<>{modeSelector}<p role="status">Loading MdC editor…</p></>}>
+          <MdcEditor draft={mdcDraft} setDraft={setMdcDraft} modeSelector={modeSelector} inputRef={textInputRef} />
+        </Suspense>
+      ) : (
+        <>
+          <HieroglyphOutput glyphs={outputHieroglyphs} value={outputString} onClear={clearOutput} />
+          <Box ref={inputAreaRef} sx={{
+            display: "flex",
+            flexDirection: {xs: "column", sm: "row"},
+            alignItems: {xs: "flex-start", sm:"center" },
+            gap: "20px",
+            width: '100%',
+          }}>
+            {modeSelector}
+            <TextField
+              autoFocus
+              inputRef={textInputRef}
+              placeholder={inputModePlaceholders[selectedInputMode]}
+              variant="outlined"
+              value={inputString}
+              onChange={onChange}
+              onKeyDown={handleInputKeyDown}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
+              sx={{
+                flex: { xs: '0 0 auto', sm: '0 0 250px' },
+                maxWidth: '100%',
+                width: '250px',
+              }}
+              InputProps={{
+                sx: {
+                  backgroundColor: 'var(--background-color-brighter)',
+                  color: 'var(--text-color)',
+                  borderColor: 'var(--border-color)',
+                  '& .MuiInputBase-input::placeholder': {
+                    color: 'text.secondary',
+                    opacity: 1,
+                  },
+                }
+              }}
+              inputProps={{
+                'aria-label': `${selectedInputMode} input`,
+              }}
+            />
+          </Box>
+          {isMenuVisible && candidates!.length > 0 && (
+            <CandidatesMenu
+              ref={candidatesMenuRef}
+              anchorElement={inputAreaRef.current}
+              candidates={candidates}
+              selectedIndex={selectedIndex}
+              selectCandidate={selectCandidate}
+              showShortcuts={selectedInputMode !== InputMode.GARDINER}
+            />
+          )}
+        </>
+      )}
+    </Box>
   )
 
 }

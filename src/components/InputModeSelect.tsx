@@ -61,6 +61,7 @@ export function InputModeSelect(props: InputModeSelectProps) {
         {
           Object.values(InputMode).map((inputMode: string) => 
               <MenuItem 
+                key={inputMode}
                 value={inputMode}
                 sx={{
                   backgroundColor: 'var(--background-color-brighter)',

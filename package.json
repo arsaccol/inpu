@@ -8,6 +8,7 @@
     "dev": "vite --host",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
+    "test": "vitest run",
     "preview": "vite preview",
     "postinstall": "cp ./node_modules/sql.js/dist/sql-wasm.wasm ./public/",
     "predeploy": "npm run build",
@@ -27,6 +28,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
+    "@testing-library/react": "^16.3.3",
     "@types/react": "19.0.12",
     "@types/react-dom": "19.0.4",
     "@vitejs/plugin-react": "^4.3.4",
@@ -34,8 +36,10 @@
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.16",
     "globals": "^15.14.0",
+    "jsdom": "^26.1.0",
     "typescript": "~5.6.2",
     "typescript-eslint": "^8.18.2",
-    "vite": "^6.0.5"
+    "vite": "^6.0.5",
+    "vitest": "^3.2.7"
   }
 }
