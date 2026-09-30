@@ -13,9 +13,14 @@ The **Manuel de Codage** mode composes quadrats with live HieroJax rendering:
 try `A1:O1` (vertical) or `W24*Z7` (horizontal). Copy produces Unicode text with
 Egyptian format controls. See the [MdC guide](docs/mdc.md) for supported syntax,
 conversion limits, and validation status, and [third-party notices](THIRD_PARTY.md)
-for the GPL-3.0 integration and outstanding distribution-license requirements.
+for upstream licenses and attribution.
 
 Your suggestions and contributions are welcome! You may use [issues](https://github.com/arsaccol/inpu/issues) to provide feedback, report bugs, and so on. Feel free to use [this Google form](https://forms.gle/iGvfAd5toML9Gxt57) as well. Pull requests are welcome, too! If you want to make a contribution with a PR, consider writing an issue first so we understand what you intend to implement, and then address the issue in your PR, or directly make your PR addressing an already existing issue.
+
+## License
+
+Inpu is licensed under GPL version 3 only. See [LICENSE](LICENSE) and
+[third-party notices](THIRD_PARTY.md).
 
 ## Development
 

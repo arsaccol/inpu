@@ -33,10 +33,16 @@ function HomePage() {
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/review" element={<ReviewPage />} />
-    </Routes>
+    <>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/review" element={<ReviewPage />} />
+      </Routes>
+      <Typography component="footer" variant="caption" color="text.secondary" sx={{ mt: 4 }}>
+        © Inpu contributors · GPL-3.0-only · Free to share and modify · No warranty ·{' '}
+        <a href="https://github.com/arsaccol/inpu">Source and license</a>
+      </Typography>
+    </>
   )
 }
 
