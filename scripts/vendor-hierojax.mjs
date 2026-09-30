@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-only
+// Copyright (C) Inpu contributors
 // Rebuild the isolated ESM bundle from a local checkout of the pinned upstream.
 // This script assembles source files; it does not execute HieroJax.
 import { readFile, writeFile, mkdir, copyFile } from 'node:fs/promises'
@@ -22,6 +24,7 @@ const files = [
 const sections = [`/*! HieroJax — GPL-3.0; https://github.com/nederhof/hierojax
  * Upstream: ${revision}
  * Assembled for Inpu by scripts/vendor-hierojax.mjs. See THIRD_PARTY.md.
+ * Modified for Inpu on 2026-09-29: ESM assembly and named exports.
  * Original source retained below; CommonJS CLI footers removed for ESM.
  */`]
 for (const file of files) {

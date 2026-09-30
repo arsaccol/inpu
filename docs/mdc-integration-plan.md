@@ -13,17 +13,12 @@ candidate shortcuts (especially spaces and digits). The existing global copy
 shortcut currently copies the output, so its MdC value must be canonical Unicode.
 Add a preview copy handler for selection/context-menu copying as well.
 
-## Licensing and branch scope
+## Licensing
 
-The repository has no LICENSE/COPYING file and package.json has no license field.
-The README describes a public browser deployment. HieroJax is GPL-3.0;
-NewGardiner is SIL OFL 1.1. Incorporating HieroJax requires establishing compatible
-distribution terms for Inpu. An adapter boundary is an architectural choice,
-not a workaround for license obligations. The owner authorized implementation on
-the separate `quadrats` branch after this ambiguity was reported. This branch
-includes isolated GPL code with notices; it does not change Inpu's overall
-license. Compatible distribution terms and corresponding source must be resolved
-before publishing the combined application. See `THIRD_PARTY.md`.
+Inpu is licensed under GPL-3.0-only, with root LICENSE, package metadata, and
+source notices. HieroJax's GPL-3.0 and NewGardiner's SIL OFL 1.1 notices remain
+intact. The deployed License & source page links to the full licenses and a
+source archive generated for each build. See `THIRD_PARTY.md`.
 
 ## Reviewed upstream
 
@@ -49,7 +44,7 @@ SVG. SVG remains the preview output.
 ## Implementation steps
 
 1. Retain all required source/font notices. Pin upstream files and document
-   assembly modifications and the unresolved distribution terms.
+   assembly modifications and distribution terms.
 2. Expose a synchronous conversion API returning Unicode and warnings. Keep
    parsing independent of DOM/font initialization. Validate unknown signs and
    prevent private-use placeholders from becoming silently accepted output.
