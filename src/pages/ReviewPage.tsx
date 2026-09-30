@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: GPL-3.0-only
-// Copyright (C) Inpu contributors
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import {

@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: GPL-3.0-only
-// Copyright (C) Inpu contributors
 import initSqlJs from 'sql.js';
 import { Database } from 'sql.js'
 import schema from '../../inpu-db/001_schema.sql?raw';

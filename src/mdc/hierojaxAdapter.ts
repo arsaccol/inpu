@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: GPL-3.0-only
-// Copyright (C) Inpu contributors
 import { syntax } from './vendor/hierojax/runtime.js'
 import fontUrl from './vendor/hierojax/NewGardiner.otf?url'
 import './vendor/hierojax/hierojax.css'

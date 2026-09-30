@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: GPL-3.0-only
-// Copyright (C) Inpu contributors
 import { lazy, Suspense, useState, useEffect, useRef } from 'react'
 import { InputMode, useIME } from '../hooks/useIME'
 import { TextField } from '@mui/material'

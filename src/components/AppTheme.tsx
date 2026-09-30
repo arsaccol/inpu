@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: GPL-3.0-only
-// Copyright (C) Inpu contributors
 import { PropsWithChildren, useMemo } from 'react'
 import { CssBaseline, ThemeProvider, createTheme, useMediaQuery } from '@mui/material'
 

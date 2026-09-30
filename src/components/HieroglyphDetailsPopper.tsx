@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: GPL-3.0-only
-// Copyright (C) Inpu contributors
 import { Box, Paper, Popper, Stack, Typography } from '@mui/material'
 import { HieroglyphModel } from '../models/Hieroglyph.type'
 import { GardinerCodeBadge } from './GardinerCodeBadge'
