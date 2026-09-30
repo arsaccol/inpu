@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-only
+// Copyright (C) Inpu contributors
 import './App.css'
 import { MaterialIME } from './components/MaterialIME'
 import { Link, Route, Routes } from 'react-router-dom'
@@ -33,10 +35,15 @@ function HomePage() {
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/review" element={<ReviewPage />} />
-    </Routes>
+    <>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/review" element={<ReviewPage />} />
+      </Routes>
+      <Typography component="footer" variant="caption" color="text.secondary" sx={{ mt: 4 }}>
+        <a href={`${import.meta.env.BASE_URL}license.html`}>License &amp; source</a>
+      </Typography>
+    </>
   )
 }
 

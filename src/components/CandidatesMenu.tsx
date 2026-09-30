@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-only
+// Copyright (C) Inpu contributors
 import { Box, Paper, Popper } from '@mui/material'
 import { CandidateMenuItem } from './CandidateMenuItem'
 import { forwardRef, useEffect, useImperativeHandle, useLayoutEffect, useRef, useState } from 'react'

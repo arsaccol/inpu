@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-only
+// Copyright (C) Inpu contributors
 import { MenuItem } from "@mui/material"
 import { HieroglyphModel } from "../models/Hieroglyph.type"
 import { Typography }  from "@mui/material"

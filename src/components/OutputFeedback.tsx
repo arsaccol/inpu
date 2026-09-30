@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-only
+// Copyright (C) Inpu contributors
 import { Box } from '@mui/material'
 
 export interface OutputFeedbackProps {

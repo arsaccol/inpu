@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-only
+// Copyright (C) Inpu contributors
 import type { Dispatch, ReactNode, Ref, SetStateAction } from 'react'
 import { Box, TextField, Typography } from '@mui/material'
 import { OutputUtilities } from '../components/OutputUtilities'
