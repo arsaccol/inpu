@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: GPL-3.0-only
-// Copyright (C) Inpu contributors
 import { Ref, useEffect, useId, useRef, useState } from 'react'
 import { Box, IconButton, SvgIcon, SvgIconProps } from '@mui/material'
 import { OutputFeedback } from './OutputFeedback'

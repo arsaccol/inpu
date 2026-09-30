@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: GPL-3.0-only
-// Copyright (C) Inpu contributors
 import { HieroglyphModel } from '../models/Hieroglyph.type'
 
 export interface OutputGlyphProps {

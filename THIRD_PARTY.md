@@ -1,9 +1,5 @@
 # Third-party components for MdC quadrats
 
-Inpu's original code and included database snapshot are licensed under
-GPL-3.0-only; see the root LICENSE and README. The combined application is
-distributed under GPLv3. The third-party licenses below remain in effect.
-
 ## HieroJax
 
 - Author/project: Mark-Jan Nederhof, <https://github.com/nederhof/hierojax>
@@ -40,20 +36,14 @@ Vite emits the font as a hashed asset, referenced by both the CSS and the adapte
 The entire MdC editor is loaded on demand. Browser font loading occurs before
 glyph measurement/rendering; a local system font is not required.
 
-## Distribution and corresponding source
+## Inpu distribution status
 
-Inpu is licensed under GPL-3.0-only by its owner's direction. Existing copyright
-notices and third-party licenses are preserved. This does not relicense npm
-dependencies or NewGardiner, nor change the separate inpu-db repository's metadata.
+Inpu had no declared project license when this work began. This branch contains
+the GPL-3.0 integration at the owner's explicit direction, and preserves upstream
+notices. It does **not** assign a new license to existing Inpu code or establish
+that all contribution rights have been cleared.
 
-The application's License & source link opens `license.html`. Each production
-build includes `source/inpu-source.zip`, generated from the same application and
-database files used in that build. It contains the preferred application source,
-HieroJax source and grammars, source assembly script, font, lockfile, configuration,
-and build instructions. `SOURCE-SNAPSHOT.json` records the included file hashes.
-The archive is served alongside the app without a fee or authentication.
-
-`licenses/npm-notices.txt` preserves installed production dependency license and
-copyright files. Dependencies are obtained using the exact versions and package
-URLs in package-lock.json. These third-party components retain their own licenses.
-The license texts and source archive must remain accessible when deploying dist.
+Publishing a combined application incorporating HieroJax requires appropriate
+GPL-compatible distribution terms, notices, and corresponding source. The clean
+adapter boundary does not remove those obligations. This branch alone does not
+resolve Inpu's distribution licensing. No deployment is part of this change.

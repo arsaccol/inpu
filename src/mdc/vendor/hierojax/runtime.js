@@ -1,7 +1,6 @@
 /*! HieroJax — GPL-3.0; https://github.com/nederhof/hierojax
  * Upstream: da318801e00b10b4b5c5ec8d9cc6f8fddcc9eb5a
  * Assembled for Inpu by scripts/vendor-hierojax.mjs. See THIRD_PARTY.md.
- * Modified for Inpu on 2026-09-29: ESM assembly and named exports.
  * Original source retained below; CommonJS CLI footers removed for ESM.
  */
 
