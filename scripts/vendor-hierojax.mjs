@@ -43,5 +43,3 @@ await copyFile(resolve(upstream, 'docs/NewGardiner.otf'), resolve(destination, '
 for (const grammar of ['syntax.jison', 'mdcsyntax.jison']) {
   await copyFile(resolve(upstream, 'src', grammar), resolve(destination, grammar))
 }
-await mkdir(resolve('public/licenses'), { recursive: true })
-await copyFile(resolve(destination, 'LICENSE'), resolve('public/licenses/HieroJax-GPL-3.0.txt'))
